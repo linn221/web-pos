@@ -10,7 +10,11 @@ class ApiAuthController extends Controller
     //
     public function login(Request $request)
     {
-        // $request->validate([]);
+        $request->validate([
+            'email' => 'required|exists:users,email',
+            ''
+
+        ]);
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'message' => 'Username or password wrong'
