@@ -22,7 +22,7 @@ class VoucherFactory extends Factory
         // $net_tottal = $total + $tax;
         return [
             'customer_name' => fake()->name(),
-            'phone' => fake()->phoneNumber(),
+            'phone_number' => fake()->phoneNumber(),
             'voucher_number' => fake()->regexify('[A-Z0-9]{8}'),
             'total' => 0,
             'tax' => 0,
