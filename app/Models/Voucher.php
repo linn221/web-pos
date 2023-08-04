@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     use HasFactory;
+    public function records()
+    {
+        return $this->hasMany(VoucherRecord::class);
+    }
 }
