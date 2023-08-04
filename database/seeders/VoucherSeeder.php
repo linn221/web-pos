@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Voucher;
+use App\Models\VoucherRecord;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,9 +14,9 @@ class VoucherSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i = 20; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $voucher = Voucher::factory()->create();
-            Voucher::factory(rand(1, 5))->create([
+            VoucherRecord::factory(rand(1, 5))->create([
                 'voucher_id' => $voucher->id
             ]);
             $total_cost = $voucher->records()->sum('cost');
