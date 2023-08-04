@@ -14,9 +14,15 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
+        // \App\Models\User::factory()->create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@example.com',
+        // ]);
+        $this->call([
+            BrandSeeder::class,
+            ProductSeeder::class,
+            StockSeeder::class,
+            VoucherSeeder::class,
         ]);
     }
 }
