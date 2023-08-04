@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             BrandSeeder::class,
             ProductSeeder::class,
-            StockSeeder::class
+            StockSeeder::class,
+            VoucherSeeder::class,
+            VoucherRecordSeeder::class
         ]);
     }
 }
