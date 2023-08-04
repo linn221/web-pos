@@ -18,5 +18,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@example.com',
         ]);
+        $this->call([
+            BrandSeeder::class,
+            ProductSeeder::class,
+            StockSeeder::class
+        ]);
     }
 }
