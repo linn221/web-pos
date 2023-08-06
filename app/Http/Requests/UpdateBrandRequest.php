@@ -21,6 +21,7 @@ class UpdateBrandRequest extends FormRequest
      */
     public function rules(): array
     {
+        // $id = request()->id;
         return [
             'name' => 'required|min:3|max:20',
             'company' => 'required|min:3|max:20',

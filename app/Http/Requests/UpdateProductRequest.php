@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
             'name' => 'required|min:3|max:20',
             'actual_price' => 'required|min:1|numeric',
             'sale_price' => 'required|min:1|numeric',
-            'total_stock' => 'required|numeric',
+            // 'total_stock' => 'required|numeric',
             'unit' => 'required',
             'more_information' => 'nullable',
             'brand_id' => 'required|exists:brands,id',
