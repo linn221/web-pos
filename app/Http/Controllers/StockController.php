@@ -6,6 +6,7 @@ use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
 use App\Http\Resources\BrandResource;
 use App\Http\Resources\StockResource;
+use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,19 @@ class StockController extends Controller
             'quantity' => $request->quantity,
             'more_information' => $request->more_information
         ]);
+
+        $stocks = Stock::where('product_id', $request->product_id)->get();
+        $totalStock = 0;
+
+        foreach ($stocks as $stock) {
+            $totalStock += $stock->quantity;
+        }
+
+        $product = Product::find($request->product_id);
+        // return $product;
+        $product->total_stock = $totalStock;
+        $product->save();
+
 
 
         return new StockResource($stock);

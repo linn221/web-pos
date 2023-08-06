@@ -33,7 +33,7 @@ class ProductController extends Controller
             'name' => $request->name,
             'actual_price' => $request->actual_price,
             'sale_price' => $request->sale_price,
-            'total_stock' => $request->total_stock,
+            'total_stock' => 0,
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
