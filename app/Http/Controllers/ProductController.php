@@ -12,13 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    // photos are not supported yet
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
 
-        $products = Product::latest("id")->paginate(5)->withQueryString();
+        $products = Product::latest("id")->paginate(15)->withQueryString();
 
         return ProductResource::collection($products);
     }
@@ -52,7 +53,7 @@ class ProductController extends Controller
         if (is_null($product)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Product not found",
 
             ], 404);
         }
@@ -74,7 +75,7 @@ class ProductController extends Controller
         if (is_null($product)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Product not found",
 
             ], 404);
         }
@@ -103,7 +104,7 @@ class ProductController extends Controller
         if (is_null($product)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Product not found",
 
             ], 404);
         }

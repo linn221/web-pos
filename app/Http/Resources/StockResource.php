@@ -17,6 +17,7 @@ class StockResource extends JsonResource
         return [
             'id' => $this->id,
             'product_id' => $this->product_id,
+            // 'product_name'
             'quantity' => $this->quantity,
             'more_information' => $this->more_information
         ];
