@@ -19,7 +19,7 @@ class StockController extends Controller
     public function index()
     {
 
-        $stocks = Stock::latest("id")->paginate(5)->withQueryString();
+        $stocks = Stock::latest("id")->paginate(20)->withQueryString();
 
         return StockResource::collection($stocks);
     }
@@ -115,7 +115,7 @@ class StockController extends Controller
 
     private function syncProductTotalStock() :void
     {
-        // should move this code to the observer
+        // @fix should move this code to the observer
         $totalStock = Stock::where('product_id', request()->product_id)->sum('quantity');
 
         $product = Product::find(request()->product_id);
