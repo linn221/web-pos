@@ -18,9 +18,8 @@ class BrandResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'company' => $this->company,
-            'information' => $this->information,
-            'products' => $this->products->pluck('name')
-
+            // 'information' => $this->information,
+            // 'products' => $this->products->pluck('name')
         ];
     }
 }

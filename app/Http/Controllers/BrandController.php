@@ -37,7 +37,7 @@ class BrandController extends Controller
 
 
         // return response()->json($brand);
-        return new BrandResource($brand);
+        return new BrandDetailResource($brand);
     }
 
     /**
@@ -56,7 +56,7 @@ class BrandController extends Controller
         }
 
         // return response()->json($brand);
-        return new BrandResource($brand);
+        return new BrandDetailResource($brand);
     }
 
     /**
@@ -85,7 +85,7 @@ class BrandController extends Controller
 
 
         // return response()->json($brand);
-        return new BrandResource($brand);
+        return new BrandDetailResource($brand);
     }
 
     /**

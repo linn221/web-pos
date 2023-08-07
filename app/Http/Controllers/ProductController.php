@@ -40,7 +40,7 @@ class ProductController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        return new ProductResource($product);
+        return new ProductDetailResource($product);
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductController extends Controller
             ], 404);
         }
 
-        return new ProductResource($product);
+        return new ProductDetailResource($product);
 
         // return response()->json($product);
     }
@@ -91,7 +91,7 @@ class ProductController extends Controller
         ]);
 
         // return response()->json($product);
-        return new ProductResource($product);
+        return new ProductDetailResource($product);
     }
 
     /**
