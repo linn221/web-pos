@@ -404,3 +404,11 @@ http://127.0.0.1:8000/api/v1/stock/68
 #### Request
 
 -   Method: `DELETE`
+
+---
+
+## Database Design
+
+```
+https://drawsql.app/teams/workshop-4/diagrams/web-pos
+```
