@@ -20,10 +20,11 @@ class ProductResource extends JsonResource
             'actual_price' => $this->actual_price,
             'sale_price' => $this->sale_price,
             'total_stock' => $this->total_stock,
-            // 'brand_name' =>
+            'brand_name' => $this->brand->name,
+            'brand_id' => $this->brand->id,
             'unit' => $this->unit,
             'more_information' => $this->more_information,
-            'photo' => $this->photo
+            // 'photo' => $this->photo
         ];
     }
 }

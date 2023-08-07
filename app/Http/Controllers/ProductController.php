@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    // photos are not supported yet
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +28,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-
+        // @fix => photos are not supported yet
         $product = Product::create([
             'name' => $request->name,
             'actual_price' => $request->actual_price,
