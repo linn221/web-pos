@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
         Route::get("/tokens", [ApiAuthController::class, 'tokens']);
+        Route::post('/register-staff', [ApiAuthController::class, 'registerStaff']);
     });
 
     Route::post('/login', [ApiAuthController::class, 'login']);
