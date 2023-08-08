@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         $sale_price = $actual_price + rand(1, 3) * 50;
         $units = ['sigle', 'dozen'];
         return [
-            'name' => fake()->name(),
+            'name' => fake()->word(),
             'actual_price' => $actual_price,
             'sale_price' => $sale_price,
             'total_stock' => rand(10, 50),
