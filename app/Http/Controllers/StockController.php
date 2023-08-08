@@ -42,9 +42,6 @@ class StockController extends Controller
         // $product->total_stock = $totalStock;
         // $product->save();
 
-        $this->syncProductTotalStock();
-
-
         return new StockResource($stock);
     }
 
@@ -85,9 +82,6 @@ class StockController extends Controller
             'quantity' => $request->quantity,
             'more_information' => $request->more_information
         ]);
-
-        $this->syncProductTotalStock();
-
         return new StockResource($stock);
     }
 
@@ -106,21 +100,9 @@ class StockController extends Controller
         }
 
         $stock->delete();
-        $this->syncProductTotalStock();
-
         return response()->json([
             'message' => "stock has deleted"
         ], 204);
-    }
-
-    private function syncProductTotalStock() :void
-    {
-        // @fix should move this code to the observer
-        $totalStock = Stock::where('product_id', request()->product_id)->sum('quantity');
-
-        $product = Product::find(request()->product_id);
-        $product->total_stock = $totalStock;
-        $product->save();
     }
 }
 
