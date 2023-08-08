@@ -23,7 +23,7 @@ class ProductFactory extends Factory
             'name' => fake()->name(),
             'actual_price' => $actual_price,
             'sale_price' => $sale_price,
-            'total_stock' => 0,
+            'total_stock' => rand(10, 50),
             'unit' => array_rand($units),
             'more_information' => fake()->sentence(rand(1, 13)),
             'brand_id' => rand(1, 15),
