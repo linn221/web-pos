@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
         Route::apiResource('stock', StockController::class);
-
+      
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
         Route::get("/tokens", [ApiAuthController::class, 'tokens']);
