@@ -16,12 +16,14 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@gmail.com',
+            'role' => 'admin'
         ]);
         $this->call([
             BrandSeeder::class,
             ProductSeeder::class,
-            StockSeeder::class
+            StockSeeder::class,
+            VoucherSeeder::class,
         ]);
     }
 }
