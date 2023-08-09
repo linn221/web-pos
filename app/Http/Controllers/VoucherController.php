@@ -19,6 +19,15 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
+        $request->validate([
+            'customer_name' => 'required|min:5|max:20',
+            'phone_number' => 'required',
+            'records' => 'array',
+            'records.*.product_id' => 'required|exists:products,id',
+            'records.*.quantity' => 'required|numeric|min:1'
+        ]);
+        // return $request;
         //
     }
 
