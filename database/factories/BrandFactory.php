@@ -17,7 +17,7 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'name' => fake()->word(10),
             'company' => fake()->company(),
             'information' => fake()->sentence(rand(1, 13)),
             'user_id' => 1

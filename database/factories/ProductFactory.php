@@ -16,18 +16,19 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $actual_price = rand(2, 16) * 50;
-        $sale_price = $actual_price + rand(1, 3) * 50;
-        $units = ['sigle', 'dozen'];
+        $actual_price = fake()->numberBetween($min = 100, $max = 1000);
+        $sale_price = $actual_price + rand(1, 3) * 5;
+        // $units = ['sigle', 'dozen'];
         return [
-            'name' => fake()->name(),
+            'name' => fake()->word(),
+            'brand_id' => rand(1, 15),
             'actual_price' => $actual_price,
             'sale_price' => $sale_price,
-            'total_stock' => rand(10, 50),
-            'unit' => array_rand($units),
+            // 'total_stock' => rand(10, 50),
+            'unit' => fake()->randomElement(['single', 'dozen']),
             'more_information' => fake()->sentence(rand(1, 13)),
-            'brand_id' => rand(1, 15),
-            'user_id' => 1
+            'user_id' => 1,
+            'photo' => fake()->imageUrl($width = 640, $height = 480),
         ];
     }
 }
