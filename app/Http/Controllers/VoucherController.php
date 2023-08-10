@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VoucherCollectionResource;
 use App\Http\Resources\VoucherResource;
 use App\Models\Product;
 use App\Models\Voucher;
@@ -16,8 +17,8 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $voucher_records = VoucherRecord::all();
-        return $voucher_records;
+        $voucher_records = Voucher::all();
+        return VoucherCollectionResource::collection($voucher_records);
         //
     }
 
