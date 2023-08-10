@@ -12,4 +12,10 @@ class Voucher extends Model
     {
         return $this->hasMany(VoucherRecord::class);
     }
+
+    protected $attributes = [
+        'total' => 0,
+        'tax' => 0,
+        'net-total' => 0
+    ];
 }
