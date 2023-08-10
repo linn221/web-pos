@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VoucherResource;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
@@ -60,7 +61,7 @@ class VoucherController extends Controller
         $voucher->net_total = $total + $voucher->tax;
         $voucher->save();
 
-        return $voucher;
+        return new VoucherResource($voucher);
         // return $request;
         //
     }
