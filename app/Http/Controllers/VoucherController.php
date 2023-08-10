@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VoucherController extends Controller
 {
@@ -14,6 +15,8 @@ class VoucherController extends Controller
      */
     public function index()
     {
+        $voucher_records = VoucherRecord::all();
+        return $voucher_records;
         //
     }
 
@@ -30,24 +33,34 @@ class VoucherController extends Controller
             'records.*.product_id' => 'required|exists:products,id',
             'records.*.quantity' => 'required|numeric|min:1'
         ]);
+
         $voucher = new Voucher;
         $voucher->customer_name = $request->customer_name;
         $voucher->phone_number = $request->phone_number;
+        $voucher->user_id = Auth::id();
+        $voucher->save();
+        $total = 0;
+        $voucher_records =[];
+        foreach($request->records as $record) {
+            $record['voucher_id'] = $voucher->id;
+            $cost = $record['quantity'] * Product::find($record['product_id'])->sale_price;
+            $voucher_records[] = [
+                'product_id' => $record['product_id'],
+                'cost' => $cost,
+                'voucher_id' => $voucher->id,
+                'quantity' => $record['quantity'],
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
+            $total += $cost;
+        }
+        VoucherRecord::insert($voucher_records);
+        $voucher->total = $total;
+        $voucher->tax = $total * 0.2;
+        $voucher->net_total = $total + $voucher->tax;
         $voucher->save();
 
-        $total = 0;
-        $voucher_records = $request->records;
-        foreach($voucher_records as $record) {
-            $record['voucher_id'] = $voucher->id;
-            $record['cost'] = Product::find($record->product_id)->sale_price;
-            $total += $record['cost'];
-            // $cost = ;
-
-        }
-        VoucherRecord::create($voucher_records);
-        $tax = $total * 0.2;
-        $net_total = $total + $tax;
-
+        return $voucher;
         // return $request;
         //
     }

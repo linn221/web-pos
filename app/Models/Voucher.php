@@ -16,6 +16,7 @@ class Voucher extends Model
     protected $attributes = [
         'total' => 0,
         'tax' => 0,
-        'net-total' => 0
+        'net_total' => 0,
+        'voucher_number' => 2000000
     ];
 }
