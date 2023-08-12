@@ -36,6 +36,6 @@ Route::prefix('v1')->group(function () {
         Route::post('/register-staff', [ApiAuthController::class, 'registerStaff']);
     });
 
-    Route::post('/login', [ApiAuthController::class, 'login']);
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
     // Route::get('/login', [ApiAuthController::class, 'login']);
 });

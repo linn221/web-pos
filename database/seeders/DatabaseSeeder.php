@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             ProductSeeder::class,
             StockSeeder::class,
-            VoucherSeeder::class,
+            // VoucherSeeder::class,
         ]);
     }
 }
