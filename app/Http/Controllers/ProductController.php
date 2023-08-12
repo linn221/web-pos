@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
@@ -18,7 +19,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-
         $products = Product::latest("id")->paginate(15)->withQueryString();
 
         return ProductResource::collection($products);
@@ -68,10 +68,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
-
         $product = Product::find($id);
-
-
         if (is_null($product)) {
             return response()->json([
                 // "success" => false,
@@ -79,6 +76,8 @@ class ProductController extends Controller
 
             ], 404);
         }
+
+        $this->authorize('update', $product);
 
         $product->update([
             'name' => $request->name,
@@ -108,6 +107,7 @@ class ProductController extends Controller
 
             ], 404);
         }
+        $this->authorize('delete', $product);
 
         $product->delete();
 

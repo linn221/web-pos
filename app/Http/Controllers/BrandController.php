@@ -9,6 +9,7 @@ use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class BrandController extends Controller
 {
@@ -27,6 +28,7 @@ class BrandController extends Controller
      */
     public function store(StoreBrandRequest $request)
     {
+        Gate::authorize('isAdmin');
 
 
         $brand = Brand::create([
@@ -65,6 +67,7 @@ class BrandController extends Controller
      */
     public function update(UpdateBrandRequest $request, string $id)
     {
+        Gate::authorize('isAdmin');
 
 
         $brand = Brand::find($id);
@@ -94,8 +97,9 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        $brand = Brand::find($id);
+        Gate::authorize('isAdmin');
 
+        $brand = Brand::find($id);
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
