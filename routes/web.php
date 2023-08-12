@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\VoucherRecord;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,28 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/test', function() {
+
+
+        VoucherRecord::insert([
+            [
+                'product_id' => 1,
+                'quantity' => 1,
+                'voucher_id' => 1,
+                'cost' => 200,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'product_id' => 1,
+                'quantity' => 1,
+                'voucher_id' => 1,
+                'cost' => 200,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
+        // VoucherRecord::create($voucher_records);
+
 });

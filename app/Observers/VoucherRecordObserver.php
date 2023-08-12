@@ -12,7 +12,7 @@ class VoucherRecordObserver
      */
     public function created(VoucherRecord $voucherRecord): void
     {
-        $voucherRecord->product()->increment('total_stock', $voucherRecord->quantity);
+        $voucherRecord->product()->decrement('total_stock', $voucherRecord->quantity);
         //
     }
 
@@ -35,7 +35,7 @@ class VoucherRecordObserver
      */
     public function deleting(VoucherRecord $voucherRecord): void
     {
-        $voucherRecord->product()->decrement('total_stock', $voucherRecord->quantity);
+        $voucherRecord->product()->increment('total_stock', $voucherRecord->quantity);
         //
     }
 }
