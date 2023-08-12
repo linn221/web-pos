@@ -28,7 +28,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
         Route::apiResource('stock', StockController::class);
-        Route::apiResource('voucher', VoucherController::class);
+        Route::apiResource('voucher', VoucherController::class)->except(['update', 'destroy']);
       
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
@@ -37,5 +37,4 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
-    // Route::get('/login', [ApiAuthController::class, 'login']);
 });
