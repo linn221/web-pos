@@ -13,7 +13,13 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::user()->role === "admin") {
+            $photos = Photo::all();
+        } else {
+            $photos = Auth::user()->photos;
+        }
+
+        return response()->json($photos);
     }
 
     /**
