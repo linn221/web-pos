@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     use HasFactory;
+    public function records()
+    {
+        return $this->hasMany(VoucherRecord::class);
+    }
+
+    protected $attributes = [
+        'total' => 0,
+        'tax' => 0,
+        'net_total' => 0,
+        'voucher_number' => 2000000
+    ];
 }
