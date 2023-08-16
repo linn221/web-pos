@@ -50,30 +50,4 @@ class ApiAuthController extends Controller
     {
         return Auth::user()->tokens;
     }
-
-    public function registerStaff(Request $request)
-    {
-
-        // Gate::authorize('register');
-        if (!Gate::allows('isAdmin')) {
-            return response()->json([
-                'message' => "You are not allow"
-            ]);
-        }
-        $request->validate([
-            "name" => "nullable|min:3",
-            "email" => "required|email|unique:users",
-            "password" => "required|min:8"
-        ]);
-
-        $user = User::create([
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => Hash::make($request->password)
-        ]);
-
-        return response()->json([
-            "message" => "User register successful",
-        ]);
-    }
 }
