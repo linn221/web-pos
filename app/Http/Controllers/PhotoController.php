@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PhotoController extends Controller
 {
@@ -19,7 +21,30 @@ class PhotoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'files.*' => 'required|mimes:jpeg,png,jpg,gif'
+        ]);
+        $uploadedFiles = $request->file('photos');
+
+
+        $files = [];
+        foreach ($uploadedFiles as $uploadedFile) {
+            $savedPhoto = $uploadedFile->store("public/photo");
+            $fileName = $uploadedFile->getClientOriginalName();
+            $extension = $uploadedFile->getClientOriginalExtension();
+
+            $files[] = Photo::create([
+                'url' => $savedPhoto,
+                'name' => $fileName,
+                'extension' => $extension,
+                'user_id' => Auth::id(),
+
+            ]);
+        }
+
+
+        return response()->json($files);
     }
 
     /**
@@ -43,6 +68,5 @@ class PhotoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
     }
 }

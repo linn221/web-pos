@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiAuthController;
+use App\Http\Controllers\PhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
+        Route::apiResource('photo', PhotoController::class);
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
         Route::get("/tokens", [ApiAuthController::class, 'tokens']);
