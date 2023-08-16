@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PhotoResource;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class PhotoController extends Controller
             $photos = Auth::user()->photos;
         }
 
-        return response()->json($photos);
+        return PhotoResource::collection($photos);
     }
 
     /**
@@ -50,7 +51,7 @@ class PhotoController extends Controller
         }
 
 
-        return response()->json($files);
+        return PhotoResource::collection($files);
     }
 
     /**
