@@ -38,7 +38,6 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
-            'user_id' => Auth::id()
         ]);
 
         return new ProductDetailResource($product);
@@ -87,7 +86,6 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
-            'user_id' => Auth::id()
         ]);
 
         // return response()->json($product);

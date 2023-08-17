@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('total_stock')->default(0);
             $table->string('unit');
             $table->string('photo')->default(config('info.default_user_photo'));
-            $table->text('more')->nullable();
+            $table->text('more_information')->nullable();
             $table->timestamps();
         });
     }
