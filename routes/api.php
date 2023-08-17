@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
         Route::get("/tokens", [ApiAuthController::class, 'tokens']);
+        Route::post('/ban-user/{id}', [UserController::class, 'ban']);
         // Route::post('/register-staff', [ApiAuthController::class, 'registerStaff']);
 
         Route::post('/change-password', [UserController::class, 'changePassword']);

@@ -37,7 +37,7 @@ class UserController extends Controller
             "address" => "required|min:10",
             "gender" => "required|in:male,female",
             "dob" => "required",
-            // "role" => "required|in:admin,staff"
+            "role" => "required|in:admin,staff"
         ]);
 
         $user = User::create([
@@ -48,7 +48,8 @@ class UserController extends Controller
             "address" => $request->address,
             "gender" => $request->gender,
             "dob" => $request->dob,
-            "role" => 'staff'
+            "role" => 'staff',
+            "photo" => $request->photo ?? config("info.default_user_photo")
         ]);
 
         return $user;
@@ -101,6 +102,7 @@ class UserController extends Controller
             "address" => $request->address,
             "gender" => $request->gender,
             "dob" => $request->dob,
+            "photo" => $request->photo ?? config("info.default_user_photo"),
             "role" => 'staff'
         ]);
         return $user;
@@ -148,8 +150,22 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function ban(string $id)
     {
+        Gate::authorize('isAdmin');
+
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json([
+                'message' => 'user not found'
+            ], 404);
+        }
+        $user->update([
+            'role' => 'ban'
+        ]);
+        return response()->json([
+            'message' => 'User has been banned'
+        ]);
         //
     }
 }
