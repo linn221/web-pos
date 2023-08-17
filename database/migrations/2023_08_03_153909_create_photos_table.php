@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('url');
             $table->string('name');
             $table->string('extension');
+            $table->string('size');
             $table->foreignId('user_id');
             $table->timestamps();
         });
