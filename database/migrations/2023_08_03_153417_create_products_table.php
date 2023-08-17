@@ -16,12 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->double('actual_price');
             $table->double('sale_price');
+            $table->foreignId('brand_id');
             $table->bigInteger('total_stock')->default(0);
             $table->string('unit');
-            $table->text('more_information');
-            $table->foreignId('brand_id');
-            $table->foreignId('user_id');
             $table->string('photo')->default(config('info.default_user_photo'));
+            $table->text('more')->nullable();
             $table->timestamps();
         });
     }
