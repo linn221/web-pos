@@ -37,7 +37,7 @@ class UserController extends Controller
             "address" => "required|min:10",
             "gender" => "required|in:male,female",
             "dob" => "required",
-            // "role" => "required|in:admin,staff"
+            "role" => "required|in:admin,staff"
         ]);
 
         $user = User::create([
@@ -48,7 +48,8 @@ class UserController extends Controller
             "address" => $request->address,
             "gender" => $request->gender,
             "dob" => $request->dob,
-            "role" => 'staff'
+            "role" => 'staff',
+            "photo" => $request->photo ?? config("info.default_user_photo")
         ]);
 
         return $user;

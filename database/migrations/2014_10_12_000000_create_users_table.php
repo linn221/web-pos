@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('address');
             $table->string("photo")->default(config("info.default_user_photo"));
             $table->enum('gender', ['male', 'female']);
-            $table->enum('role', ['admin', 'staff'])->default('staff');
+            $table->enum('role', ['admin', 'staff', 'ban'])->default('staff');
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
