@@ -34,8 +34,10 @@ class BrandController extends Controller
         $brand = Brand::create([
             'name' => $request->name,
             "company" => $request->company,
-            'information' => $request->information,
-            'user_id' => Auth::id()
+            'agent' => $request->agent,
+            'description' => $request->description ?? null,
+            'phone_no' => $request->phone_no,
+            'user_id' => Auth::id(),
         ]);
 
 
@@ -83,8 +85,9 @@ class BrandController extends Controller
         $brand->update([
             'name' => $request->name,
             "company" => $request->company,
-            'information' => $request->information,
-            'user_id' => Auth::id()
+            'agent' => $request->agent,
+            'description' => $request->description ?? null,
+            'phone_no' => $request->phone_no,
         ]);
 
 

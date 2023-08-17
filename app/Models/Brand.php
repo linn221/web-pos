@@ -10,7 +10,14 @@ class Brand extends Model
     use HasFactory;
 
 
-    protected $fillable = ["name", "company", "information", "user_id"];
+    protected $fillable = [
+        "name",
+        "company",
+        "photo",
+        "agent",
+        "phone_no", 
+        "description"
+    ];
 
     public function products()
     {

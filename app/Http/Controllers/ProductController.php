@@ -29,6 +29,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        Gate::authorize('isAdmin');
         // @fix => photos are not supported yet
         $product = Product::create([
             'name' => $request->name,
@@ -37,8 +38,8 @@ class ProductController extends Controller
             'total_stock' => 0,
             'unit' => $request->unit,
             'more_information' => $request->more_information,
+            'photo' => $request->photo ?? config("info.default_user_photo"),
             'brand_id' => $request->brand_id,
-            'user_id' => Auth::id()
         ]);
 
         return new ProductDetailResource($product);
@@ -68,6 +69,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
+        Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
             return response()->json([
@@ -87,7 +89,7 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
-            'user_id' => Auth::id()
+            'photo' => $request->photo ?? config("info.default_user_photo"),
         ]);
 
         // return response()->json($product);
@@ -99,6 +101,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
             return response()->json([
@@ -112,7 +115,7 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json([
-            'message' => 'product has deleted',
+            'message' => 'product has been deleted',
         ], 204);
     }
 }
