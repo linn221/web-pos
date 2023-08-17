@@ -18,7 +18,8 @@ class PhotoResource extends JsonResource
         return [
             "url" => asset(Storage::url($this->url)),
             "name" => $this->name,
-            "extension" => $this->extension
+            "extension" => $this->extension,
+            "fileSize" => $this->size
         ];
     }
 }

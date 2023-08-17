@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PhotoResource;
 use App\Models\Photo;
+// use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Contracts\Cache\Store;
+use Illuminate\Foundation\Console\UpCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 
 class PhotoController extends Controller
 {
@@ -32,19 +38,21 @@ class PhotoController extends Controller
         $request->validate([
             'files.*' => 'required|mimes:jpeg,png,jpg,gif'
         ]);
-        $uploadedFiles = $request->file('photos');
 
+        $uploadedFiles = $request->file('photos');
 
         $files = [];
         foreach ($uploadedFiles as $uploadedFile) {
+            $size = $uploadedFile->getSize();
             $savedPhoto = $uploadedFile->store("public/photo");
             $fileName = $uploadedFile->getClientOriginalName();
-            $extension = $uploadedFile->getClientOriginalExtension();
+            $extension = $uploadedFile->extension();
 
             $files[] = Photo::create([
                 'url' => $savedPhoto,
                 'name' => $fileName,
                 'extension' => $extension,
+                'size' => $size,
                 'user_id' => Auth::id(),
 
             ]);
@@ -75,5 +83,21 @@ class PhotoController extends Controller
      */
     public function destroy(string $id)
     {
+
+        $photo = Photo::find($id);
+
+        if (is_null($photo)) {
+            return response()->json([
+                'message' => 'photo is not found'
+            ]);
+        }
+
+        Storage::delete($photo->url);
+        $photo->delete();
+
+
+        return response()->json([
+            "message" => "photo has delete"
+        ]);
     }
 }
