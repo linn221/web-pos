@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
+use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,13 +28,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
+        Route::post('photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
         Route::apiResource('stock', StockController::class);
         Route::apiResource('voucher', VoucherController::class)->except(['update', 'destroy']);
         Route::apiResource('user', UserController::class)->except(['destroy']);
-      
+
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
         Route::get("/tokens", [ApiAuthController::class, 'tokens']);
