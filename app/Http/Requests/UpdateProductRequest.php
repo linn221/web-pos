@@ -21,6 +21,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         return [
             'name' => 'required|min:3|max:20',
             'actual_price' => 'required|min:1|numeric',
@@ -29,6 +30,7 @@ class UpdateProductRequest extends FormRequest
             'unit' => 'required',
             'more_information' => 'nullable',
             'brand_id' => 'required|exists:brands,id',
+            'photo' => 'nullable'
             // 'photo' => 'nullable|mimes:png,jpeg,gif'
         ];
     }
