@@ -110,6 +110,7 @@ class ProductController extends Controller
 
             ], 404);
         }
+
         $this->authorize('delete', $product);
 
         $product->delete();

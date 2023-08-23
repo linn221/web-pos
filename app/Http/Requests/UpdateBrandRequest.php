@@ -23,7 +23,7 @@ class UpdateBrandRequest extends FormRequest
     {
         // $id = request()->id;
         return [
-            'name' => 'required|min:3|max:20',
+            'name' => 'required|min:3|max:20|unique:brands,name,' . $this->brand,
             'company' => 'required|min:3|max:20',
             'more_information' => 'nullable',
         ];
