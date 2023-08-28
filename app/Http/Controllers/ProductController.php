@@ -30,7 +30,6 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         Gate::authorize('isAdmin');
-        // @fix => photos are not supported yet
         $product = Product::create([
             'name' => $request->name,
             'actual_price' => $request->actual_price,

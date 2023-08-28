@@ -55,7 +55,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }
@@ -77,7 +77,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }
@@ -107,7 +107,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }

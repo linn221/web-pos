@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->double('actual_price');
             $table->double('sale_price');
-            // @fix
             $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
             $table->bigInteger('total_stock')->default(0);
             $table->string('unit');
