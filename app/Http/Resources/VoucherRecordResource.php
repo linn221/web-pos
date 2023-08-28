@@ -15,8 +15,11 @@ class VoucherRecordResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'product' => $this->product->name,
-            'quantity' => $this->quantity
+            'product_id' => $this->product_id,
+            'product_name' => $this->product->name,
+            'price' => $this->cost / $this->quantity,
+            'quantity' => $this->quantity,
+            'cost' => $this->cost
         ];
     }
 }

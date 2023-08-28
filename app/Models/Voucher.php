@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Voucher extends Model
 {
-    use HasFactory;
-    public function records()
+    use HasFactory, SoftDeletes;
+    public function voucher_records()
     {
         return $this->hasMany(VoucherRecord::class);
     }

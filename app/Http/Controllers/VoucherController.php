@@ -7,6 +7,7 @@ use App\Http\Resources\VoucherResource;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,8 +18,14 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $voucher_records = Voucher::all();
-        return VoucherResource::collection($voucher_records);
+        if (Auth::user()->role == "admin") {
+            $vouchers = Voucher::latest("id")
+                ->paginate(7)->withQueryString();
+        } else {
+            // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
+            $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
+        }
+        return VoucherResource::collection($vouchers);
         //
     }
 
@@ -45,7 +52,7 @@ class VoucherController extends Controller
 
         // creating voucher records
         $total = 0;
-        foreach($request->records as $record) {
+        foreach ($request->records as $record) {
             $product = Product::find($record['product_id']);
             $quantity = $record['quantity'];
             if ($product->total_stock >= $quantity) {
@@ -76,7 +83,9 @@ class VoucherController extends Controller
      */
     public function show(string $id)
     {
+
         $voucher = Voucher::find($id);
+
         if (is_null($voucher)) {
             return response()->json([
                 // "success" => false,
@@ -101,6 +110,37 @@ class VoucherController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        $voucher = Voucher::find($id);
+        if (is_null($voucher)) {
+            return response()->json([
+                // "success" => false,
+                "message" => "Voucher not found",
+
+            ], 404);
+        }
+
+        $voucher->delete();
+
+        return response()->json([
+            "message" => "you have deleted voucher"
+        ]);
+    }
+
+
+    public function restore($id)
+    {
+        $softDeletedVoucher = Voucher::withTrashed()->find($id);
+        if (is_null($softDeletedVoucher)) {
+            return response()->json([
+                'message' => 'SoftdeletedVoucher is not found'
+            ]);
+        }
+
+        $softDeletedVoucher->restore();
+
+        return response()->json([
+            'message' => "softdeletedVoucher has been restored"
+        ]);
     }
 }

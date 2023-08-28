@@ -18,9 +18,11 @@ class VoucherResource extends JsonResource
             'id' => $this->id,
             'customer_name' => $this->customer_name,
             'phone_number' => $this->phone_number,
+            'total' => $this->total,
+            'tax' => $this->tax,
             'net_total' => $this->net_total,
-            'count' => $this->records->count()
-            // @fix eager loading
+            'voucher_record_count' => $this->voucher_records->count(),
+            // 'voucher_records' => VoucherRecordResource::collection($this->voucher_records)
         ];
     }
 }

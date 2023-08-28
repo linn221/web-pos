@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
+        Route::get('voucher/restore/{id}', [VoucherController::class, 'restore']);
+
         Route::post('photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);
         Route::apiResource('brand', BrandController::class);

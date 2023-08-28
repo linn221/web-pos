@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('tax');
             $table->bigInteger('net_total');
             $table->foreignId('user_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
