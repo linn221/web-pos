@@ -28,14 +28,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
-        Route::get('voucher/restore/{id}', [VoucherController::class, 'restore']);
+        Route::get('/voucher/restore/{id}', [VoucherController::class, 'restore']);
+        Route::get('/voucher/trash', [VoucherController::class, 'trash']);
 
-        Route::post('photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
+        Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
         Route::apiResource('stock', StockController::class)->except(['update']);
-        Route::apiResource('voucher', VoucherController::class)->except(['update', 'destroy']);
+        Route::apiResource('voucher', VoucherController::class)->except(['update']);
         Route::apiResource('user', UserController::class)->except(['destroy']);
 
         Route::get('/logout', [ApiAuthController::class, 'logout']);
