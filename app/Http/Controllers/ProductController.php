@@ -38,7 +38,7 @@ class ProductController extends Controller
             'total_stock' => 0,
             'unit' => $request->unit,
             'more_information' => $request->more_information,
-            'photo' => $request->photo ?? config("info.default_user_photo"),
+            'photo' => $request->photo,
             'brand_id' => $request->brand_id,
         ]);
 
@@ -89,7 +89,7 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
-            'photo' => $request->photo ?? config("info.default_user_photo"),
+            'photo' => $request->photo,
         ]);
 
         // return response()->json($product);

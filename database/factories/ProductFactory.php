@@ -27,7 +27,6 @@ class ProductFactory extends Factory
             // 'total_stock' => rand(10, 50),
             'unit' => fake()->randomElement(['single', 'dozen']),
             'more_information' => fake()->sentence(rand(1, 13)),
-            'photo' => fake()->imageUrl($width = 640, $height = 480),
         ];
     }
 }
