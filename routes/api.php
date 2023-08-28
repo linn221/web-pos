@@ -29,7 +29,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
         Route::get('/voucher/restore/{id}', [VoucherController::class, 'restore']);
-        Route::get('/voucher/trash', [VoucherController::class, 'trash']);
+        Route::get('/voucher/show-trash', [VoucherController::class, 'showTrash']);
+
+        Route::middleware('can:isAdmin')->group(function () {
+            Route::post('/voucher/force-delete/{id}', [VoucherController::class, 'forceDelete']);
+            Route::post('/voucher/empty-bin', [VoucherController::class, 'emptyBin']);
+            Route::post('/voucher/recycle-bin', [VoucherController::class, 'recycleBin']);
+        });
 
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);

@@ -88,8 +88,7 @@ class VoucherController extends Controller {
      */
     public function show(string $id)
     {
-        $voucher = Auth::user()->vouchers()->find($id);
-
+        $voucher = Voucher::find($id);
         if (is_null($voucher)) {
             return response()->json([
                 // "success" => false,
@@ -97,6 +96,8 @@ class VoucherController extends Controller {
 
             ], 404);
         }
+
+        $this->authorize('view', $voucher);
         return new VoucherDetailResource($voucher);
         //
     }
@@ -115,6 +116,7 @@ class VoucherController extends Controller {
             ], 404);
         }
 
+        $this->authorize('delete', $voucher);
         $voucher->delete();
 
         return response()->json([
@@ -125,21 +127,22 @@ class VoucherController extends Controller {
 
     public function restore($id)
     {
-        $softDeletedVoucher = Voucher::onlyTrashed()->find($id);
-        if (is_null($softDeletedVoucher)) {
+        $voucher = Voucher::onlyTrashed()->find($id);
+        if (is_null($voucher)) {
             return response()->json([
                 'message' => 'Voucher does on exist'
             ]);
         }
 
-        $softDeletedVoucher->restore();
+        $this->authorize('restore', $voucher);
+        $voucher->restore();
 
         return response()->json([
             'message' => "Voucher has been restored"
         ], 201);
     }
 
-    public function trash()
+    public function showTrash()
     {
         if (Gate::allows('isAdmin')) {
             $trashed_vouchers = Voucher::onlyTrashed()->get();
@@ -150,18 +153,40 @@ class VoucherController extends Controller {
         return VoucherResource::collection($trashed_vouchers);
     }
 
-    public function forceDelete()
+    // isAdmin middleware
+    public function forceDelete(string $id)
     {
+        $voucher = Voucher::onlyTrashed()->find($id);
+        if (is_null($voucher)) {
+            return response()->json([
+                'message' => 'Voucher does on exist'
+            ]);
+        }
+
+        // @fix
+        $voucher->forceDelete();
+        return response()->json([
+            'message' => 'You have deleted voucher permanently'
+        ], 204);
+    }
+
+    // isAdmin middleware
+    public function emptyBin()
+    {
+        Voucher::onlyTrashed()->forceDelete();
+        return response()->json([
+            'message' => 'Trash has been emptied'
+        ], 204);
 
     }
 
-    public function emptyTrash()
+    // isAdmin middleware
+    public function recycleBin()
     {
+        Voucher::onlyTrashed()->restore();
 
-    }
-
-    public function restoreTrash()
-    {
-
+        return response()->json([
+            'message' => 'Trash has been restored'
+        ], 201);
     }
 }
