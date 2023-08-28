@@ -16,12 +16,13 @@ class VoucherDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'customer_name' => $this->customer_name,
-            'phone_number' => $this->phone_number,
-            'total' => $this->total,
+            // @fix
+            // 'customer_name' => $this->customer_name,
+            // 'phone_number' => $this->phone_number,
+            'cash' => $this->total,
             'tax' => $this->tax,
             'net_total' => $this->net_total,
-            'records' => VoucherRecordResource::collection($this->records)
+            'records' => VoucherRecordResource::collection($this->voucher_records),
         ];
     }
 }

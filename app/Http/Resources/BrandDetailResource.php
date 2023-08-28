@@ -17,11 +17,12 @@ class BrandDetailResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'photo' => $this->photo ?? config('info.default_brand_photo'),
             'company' => $this->company,
             'agent' => $this->agent,
-            'description' => $this->description,
             'phone_no' => $this->phone_no,
-            'products' => $this->products->pluck('name')
+            'description' => $this->description,
+            'products' => ProductResource::collection($this->products),
         ];
     }
 }

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 
+use function PHPUnit\Framework\isEmpty;
+
 class PhotoController extends Controller
 {
     /**
@@ -35,6 +37,7 @@ class PhotoController extends Controller
     public function store(Request $request)
     {
 
+
         $request->validate([
             'files.*' => 'required|mimes:jpeg,png,jpg,gif'
         ]);
@@ -43,7 +46,9 @@ class PhotoController extends Controller
 
         $files = [];
         foreach ($uploadedFiles as $uploadedFile) {
-            $size = $uploadedFile->getSize();
+            $bytes = $uploadedFile->getSize();
+            $megaBytes = $bytes / (1024 * 1024); // Convert bytes to megabytes
+            $megaBytesFormatted = number_format($megaBytes, 2); // Format to 2 decimal places
             $savedPhoto = $uploadedFile->store("public/photo");
             $fileName = $uploadedFile->getClientOriginalName();
             $extension = $uploadedFile->extension();
@@ -52,7 +57,7 @@ class PhotoController extends Controller
                 'url' => $savedPhoto,
                 'name' => $fileName,
                 'extension' => $extension,
-                'size' => $size,
+                'size' => $megaBytesFormatted,
                 'user_id' => Auth::id(),
 
             ]);
@@ -98,6 +103,28 @@ class PhotoController extends Controller
 
         return response()->json([
             "message" => "photo has delete"
+        ]);
+    }
+
+
+    public function multipleDestroy(Request $request)
+    {
+
+        $photos = Photo::whereIn('id', $request->ids)->get();
+        if (count($photos) === 0) {
+            return response()->json([
+                'message' => 'not found'
+            ]);
+        }
+
+        foreach ($photos as $photo) {
+            Storage::delete($photo->url);
+        }
+
+        Photo::destroy($request->ids);
+
+        return response()->json([
+            'message' => "you have deleted multiple photos ",
         ]);
     }
 }

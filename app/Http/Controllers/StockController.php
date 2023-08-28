@@ -57,36 +57,10 @@ class StockController extends Controller
         if (is_null($stock)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
-
+                "message" => "Stock not found",
             ], 404);
         }
 
-        return new StockResource($stock);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateStockRequest $request, string $id)
-    {
-        Gate::authorize('isAdmin');
-
-        $stock = Stock::find($id);
-        if (is_null($stock)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Contact not found",
-
-            ], 404);
-        }
-
-        $stock->update([
-            'user_id' => Auth::id(),
-            'product_id' => $request->product_id,
-            'quantity' => $request->quantity,
-            'more_information' => $request->more_information
-        ]);
         return new StockResource($stock);
     }
 
@@ -101,7 +75,7 @@ class StockController extends Controller
         if (is_null($stock)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Stock not found",
 
             ], 404);
         }
