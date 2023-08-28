@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             'brand_name' => $this->brand->name,
             // 'brand_id' => $this->brand->id,
             'unit' => $this->unit,
-            // 'photo' => $this->photo
+            'photo' => $this->photo ?? config('info.default_product_photo')
         ];
     }
 }

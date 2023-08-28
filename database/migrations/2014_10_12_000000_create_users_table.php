@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('dob');
             $table->string('address');
-            $table->string("photo")->default(config("info.default_user_photo"));
+            $table->string("photo")->nullable();
             $table->enum('gender', ['male', 'female']);
             $table->enum('role', ['admin', 'staff', 'ban'])->default('staff');
             $table->string('password');
