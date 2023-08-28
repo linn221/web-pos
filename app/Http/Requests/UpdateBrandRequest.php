@@ -25,7 +25,10 @@ class UpdateBrandRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:20|unique:brands,name,' . $this->brand,
             'company' => 'required|min:3|max:20',
-            'more_information' => 'nullable',
+            'agent' => 'nullable',
+            'photo' => 'nullable',
+            'phone_no' => 'nullable',
+            'description' => 'nullable',
         ];
     }
 }

@@ -34,8 +34,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('photo', PhotoController::class);
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
-        Route::apiResource('stock', StockController::class);
-        Route::apiResource('voucher', VoucherController::class); //   ->except(['update', 'destroy']);
+        Route::apiResource('stock', StockController::class)->except(['update']);
+        Route::apiResource('voucher', VoucherController::class)->except(['update', 'destroy']);
         Route::apiResource('user', UserController::class)->except(['destroy']);
 
         Route::get('/logout', [ApiAuthController::class, 'logout']);

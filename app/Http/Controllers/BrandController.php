@@ -30,13 +30,13 @@ class BrandController extends Controller
     {
         Gate::authorize('isAdmin');
 
-
         $brand = Brand::create([
             'name' => $request->name,
             "company" => $request->company,
             'agent' => $request->agent,
-            'description' => $request->description ?? null,
             'phone_no' => $request->phone_no,
+            'photo' => $request->photo,
+            'description' => $request->description,
             'user_id' => Auth::id(),
         ]);
 
@@ -55,7 +55,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }
@@ -77,7 +77,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }
@@ -86,8 +86,9 @@ class BrandController extends Controller
             'name' => $request->name,
             "company" => $request->company,
             'agent' => $request->agent,
-            'description' => $request->description ?? null,
             'phone_no' => $request->phone_no,
+            'photo' => $request->photo,
+            'description' => $request->description,
         ]);
 
 
@@ -106,7 +107,7 @@ class BrandController extends Controller
         if (is_null($brand)) {
             return response()->json([
                 // "success" => false,
-                "message" => "Contact not found",
+                "message" => "Brand not found",
 
             ], 404);
         }

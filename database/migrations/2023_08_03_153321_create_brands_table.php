@@ -15,16 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('company');
-            $table->string('agent');
-            $table->text('description')->nullable();
+            $table->string('agent')->nullable();
             $table->string('phone_no')->nullable();
+            $table->string('photo')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+    
     public function down(): void
     {
         Schema::dropIfExists('brands');

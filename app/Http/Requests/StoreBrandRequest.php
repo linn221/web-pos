@@ -24,7 +24,10 @@ class StoreBrandRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:20|unique:brands,name',
             'company' => 'required|min:3|max:20',
-            'more_information' => 'nullable',
+            'agent' => 'nullable',
+            'phone_no' => 'nullable',
+            'photo' => 'nullable',
+            'description' => 'nullable',
         ];
     }
 }
