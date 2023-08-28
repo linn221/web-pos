@@ -40,6 +40,7 @@ class VoucherController extends Controller {
             // @fix makes customer_name optional
             'customer_name' => 'nullable',
             'phone_number' => 'nullable',
+            'voucher_number' => 'required',
             'records' => 'array',
             'records.*.product_id' => 'required|exists:products,id',
             'records.*.quantity' => 'required|numeric|min:1'
@@ -49,6 +50,7 @@ class VoucherController extends Controller {
         $voucher = new Voucher;
         $voucher->customer_name = $request->customer_name;
         $voucher->phone_number = $request->phone_number;
+        $voucher->voucher_number = $request->voucher_number;
         $voucher->user_id = Auth::id();
         $voucher->save();
 
