@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return $users;
+        return UserResource::collection($users);
         //
     }
 
@@ -31,6 +32,7 @@ class UserController extends Controller
         
         $request->validate([
             "name" => "nullable|min:3",
+            "photo" => "nullable",
             "email" => "required|email|unique:users",
             "password" => "required|min:8",
             "phone_number" => "required|min:9|max:15",
@@ -42,6 +44,7 @@ class UserController extends Controller
 
         $user = User::create([
             "name" => $request->name,
+            "photo" => $request->photo,
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "phone_number" => $request->phone_number,
@@ -49,10 +52,9 @@ class UserController extends Controller
             "gender" => $request->gender,
             "dob" => $request->dob,
             "role" => 'staff',
-            "photo" => $request->photo ?? config("info.default_user_photo")
         ]);
 
-        return $user;
+        return new UserResource($user);
         //
     }
 
@@ -69,7 +71,7 @@ class UserController extends Controller
             ], 404);
         }
 
-        return $user;
+        return new UserResource($user);
         //
     }
 
@@ -80,6 +82,7 @@ class UserController extends Controller
     {
         $request->validate([
             "name" => "nullable|min:3",
+            "photo" => "nullable",
             "email" => "required|email|unique:users,email,$id",
             "phone_number" => "required|min:9|max:15",
             "address" => "required|min:10",
@@ -97,15 +100,15 @@ class UserController extends Controller
 
         $user->update([
             "name" => $request->name,
+            "photo" => $request->photo,
             "email" => $request->email,
             "phone_number" => $request->phone_number,
             "address" => $request->address,
             "gender" => $request->gender,
             "dob" => $request->dob,
-            "photo" => $request->photo ?? config("info.default_user_photo"),
             "role" => 'staff'
         ]);
-        return $user;
+        return new UserResource($user);
         //
     }
 
