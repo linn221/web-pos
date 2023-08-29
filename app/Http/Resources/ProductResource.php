@@ -22,7 +22,9 @@ class ProductResource extends JsonResource
             'brand_name' => $this->brand->name,
             // 'brand_id' => $this->brand->id,
             'unit' => $this->unit,
-            'photo' => $this->photo ?? config('info.default_product_photo')
+            'photo' => $this->photo ?? config('info.default_product_photo'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

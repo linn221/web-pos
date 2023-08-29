@@ -21,11 +21,9 @@ class BrandResource extends JsonResource
             'company' => $this->company,
             'agent' => $this->agent,
             'phone_no' => $this->phone_no,
-            // @fix
-            'products' => $this->products->pluck('name')
-            // 'products' => ProductResource::collection($this->products),
-            // 'description' => $this->description,
-            // 'information' => $this->information,
+            'product_count' => $this->products->count(),
+            'created_at' => $this->created_at,
+            'created_at' => $this->created_at,
         ];
     }
 }

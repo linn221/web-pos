@@ -26,6 +26,8 @@ class VoucherDetailResource extends JsonResource
             'records' => VoucherRecordResource::collection($this->voucher_records),
             'more_information' => $this->more_information,
             'user_id' => $this->user_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

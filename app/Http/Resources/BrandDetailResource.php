@@ -23,6 +23,8 @@ class BrandDetailResource extends JsonResource
             'phone_no' => $this->phone_no,
             'description' => $this->description,
             'products' => ProductResource::collection($this->products),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
