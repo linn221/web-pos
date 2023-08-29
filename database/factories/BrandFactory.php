@@ -21,7 +21,7 @@ class BrandFactory extends Factory
             'company' => fake()->company(),
             'agent' => fake()->name(),
             'phone_no' => fake()->phoneNumber(),
-            'description' => fake()->sentence(rand(1, 13)),
+            'more_information' => fake()->sentence(rand(1, 13)),
             //
         ];
     }

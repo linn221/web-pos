@@ -17,7 +17,7 @@ class VoucherRecordResource extends JsonResource
         return [
             'product_id' => $this->product_id,
             'product_name' => $this->product->name,
-            'price' => $this->cost / $this->quantity,
+            'sold_price' => $this->cost / $this->quantity,
             'quantity' => $this->quantity,
             'cost' => $this->cost
         ];

@@ -27,7 +27,7 @@ Route::get('/test', function() {
                 'voucher_id' => 1,
                 'cost' => 200,
                 'created_at' => now(),
-                'updated_at' => now()
+                'update_date' => now()
             ],
             [
                 'product_id' => 1,
@@ -35,7 +35,7 @@ Route::get('/test', function() {
                 'voucher_id' => 1,
                 'cost' => 200,
                 'created_at' => now(),
-                'updated_at' => now()
+                'update_date' => now()
             ]
         ]);
         // VoucherRecord::create($voucher_records);
