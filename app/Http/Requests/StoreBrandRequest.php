@@ -27,7 +27,7 @@ class StoreBrandRequest extends FormRequest
             'agent' => 'nullable',
             'phone_no' => 'nullable',
             'photo' => 'nullable',
-            'description' => 'nullable',
+            'more_information' => 'nullable',
         ];
     }
 }
