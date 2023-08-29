@@ -43,7 +43,8 @@ class VoucherController extends Controller {
             'voucher_number' => 'required',
             'records' => 'array',
             'records.*.product_id' => 'required|exists:products,id',
-            'records.*.quantity' => 'required|numeric|min:1'
+            'records.*.quantity' => 'required|numeric|min:1',
+            'more_information' => 'nullable'
         ]);
 
         // creating a voucher
@@ -52,6 +53,7 @@ class VoucherController extends Controller {
         $voucher->phone_number = $request->phone_number;
         $voucher->voucher_number = $request->voucher_number;
         $voucher->user_id = Auth::id();
+        $voucher->more_information = $request->more_information;
         $voucher->save();
 
         // creating voucher records

@@ -27,7 +27,8 @@ class VoucherFactory extends Factory
             'total' => $total,
             'tax' => $tax,
             'net_total' => $net_total,
-            'user_id' => 1
+            'user_id' => 1,
+            // 'more_information' => fake()->paragraph(rand(1, 3))
         ];
     }
 }
