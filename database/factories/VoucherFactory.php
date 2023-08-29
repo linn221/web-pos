@@ -17,18 +17,17 @@ class VoucherFactory extends Factory
     public function definition(): array
     {
 
-        // $total = rand(2, 16) * 100;
-        // $tax = $total * 0.05;
-        // $net_tottal = $total + $tax;
+        $total = rand(2, 16) * 150;
+        $tax = $total * 0.02;
+        $net_total = $total + $tax;
         return [
             'customer_name' => fake()->name(),
             'phone_number' => fake()->phoneNumber(),
             'voucher_number' => fake()->regexify('[A-Z0-9]{8}'),
-            'total' => 0,
-            'tax' => 0,
-            'net_total' => 0,
+            'total' => $total,
+            'tax' => $tax,
+            'net_total' => $net_total,
             'user_id' => 1
-
         ];
     }
 }
