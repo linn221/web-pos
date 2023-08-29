@@ -23,8 +23,8 @@ class ProductResource extends JsonResource
             // 'brand_id' => $this->brand->id,
             'unit' => $this->unit,
             'photo' => $this->photo ?? config('info.default_product_photo'),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'create_date' => $this->created_at->format('d-m-y'),
+            'update_date' => $this->updated_at->format('d-m-y'),
         ];
     }
 }
