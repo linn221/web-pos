@@ -155,9 +155,13 @@ class VoucherController extends Controller {
     public function showTrash()
     {
         if (Gate::allows('isAdmin')) {
-            $trashed_vouchers = Voucher::onlyTrashed()->get();
+            $trashed_vouchers = Voucher::onlyTrashed()
+            ->withCount('voucher_records')
+            ->get();
         } else {
-            $trashed_vouchers = Auth::user()->vouchers()->onlyTrashed()->get();
+            $trashed_vouchers = Auth::user()->vouchers()->onlyTrashed()
+            ->withCount('voucher_records')
+            ->get();
         }
 
         return VoucherResource::collection($trashed_vouchers);
