@@ -10,6 +10,7 @@ use App\Models\VoucherRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VoucherController extends Controller
 {
@@ -18,14 +19,25 @@ class VoucherController extends Controller
      */
     public function index()
     {
+        // $totalTax = Voucher::all()->pluck('tax')->sum();
+
         if (Auth::user()->role == "admin") {
             $vouchers = Voucher::latest("id")
                 ->paginate(7)->withQueryString();
         } else {
             // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
-            $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
+            $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->paginate(7)->withQueryString();
         }
-        return VoucherResource::collection($vouchers);
+        // return VoucherResource::collection($vouchers);
+        return response()->json([
+            'vouchers' => VoucherResource::collection($vouchers),
+            'dailyVoucherReprot' => [
+                "Total Vouchers" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->count('id'),
+                "Total Cash" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('total'),
+                "Total Tax" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('tax'),
+                "Total" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('net_total')
+            ]
+        ]);
         //
     }
 
@@ -34,6 +46,8 @@ class VoucherController extends Controller
      */
     public function store(Request $request)
     {
+
+
         // return $request;
         $request->validate([
             'customer_name' => 'required|min:5|max:20',

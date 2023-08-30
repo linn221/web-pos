@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +23,7 @@ class VoucherResource extends JsonResource
             'tax' => $this->tax,
             'net_total' => $this->net_total,
             'voucher_record_count' => $this->voucher_records->count(),
+
             // 'voucher_records' => VoucherRecordResource::collection($this->voucher_records)
         ];
     }

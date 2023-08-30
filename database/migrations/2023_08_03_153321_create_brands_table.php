@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('company');
             $table->string('agent')->nullable();
             $table->string('phone_no')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-    
+
     public function down(): void
     {
         Schema::dropIfExists('brands');
