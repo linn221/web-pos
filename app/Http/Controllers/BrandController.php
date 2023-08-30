@@ -18,7 +18,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::latest('id')->paginate(15)->withQueryString();
+        $brands = Brand::latest('id')->withCount('products')->paginate(15)->withQueryString();
         // return response()->json($brands);
         return BrandResource::collection($brands);
     }
