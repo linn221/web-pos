@@ -20,11 +20,14 @@ class VoucherController extends Controller {
     {
         if (Gate::allows('isAdmin')) {
             $vouchers = Voucher::latest("id")
+                ->withCount('voucher_records')
                 ->paginate(15)->withQueryString();
         } else {
             // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
             // $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
-            $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
+            $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())
+                ->withCount('voucher_records')
+                ->get();
         }
         return VoucherResource::collection($vouchers);
         //
