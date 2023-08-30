@@ -68,13 +68,16 @@ class VoucherController extends Controller {
             $quantity = $record['quantity'];
             // @fix, return error/informative message on insufficient stock
             if ($product->total_stock >= $quantity) {
+                // create voucher records
                 $cost = $product->sale_price * $quantity;
+                // @refactor, insert through voucher
                 VoucherRecord::create([
                     'product_id' => $product->id,
                     'cost' => $cost,
                     'voucher_id' => $voucher->id,
                     'quantity' => $quantity
                 ]);
+
                 $total += $cost;
             }
         }
