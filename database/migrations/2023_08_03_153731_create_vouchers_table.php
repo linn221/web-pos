@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('customer_name')->nullable();
             $table->string('phone_number')->nullable();
+            $table->text('more_information')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

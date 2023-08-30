@@ -28,7 +28,7 @@ class UpdateBrandRequest extends FormRequest
             'agent' => 'nullable',
             'photo' => 'nullable',
             'phone_no' => 'nullable',
-            'description' => 'nullable',
+            'more_information' => 'nullable',
         ];
     }
 }

@@ -19,7 +19,9 @@ class StockResource extends JsonResource
             // 'product_id' => $this->product_id,
             'product_name' => $this->product->name,
             'quantity' => $this->quantity,
-            'more_information' => $this->more_information
+            'more_information' => $this->more_information,
+            'create_date' => $this->created_at->format('d-m-y'),
+            'update_date' => $this->updated_at->format('d-m-y'),
         ];
     }
 }
