@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use Carbon\Carbon;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,11 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        // $totalTax = Voucher::all()->pluck('tax')->sum();
+
+        // $dt = Carbon::now(new DateTimeZone('Asia/Rangoon'));
+        // // return $dt;
+        // dd($dt->format(' h:i:s A'));
+
 
         if (Auth::user()->role == "admin") {
             $vouchers = Voucher::latest("id")
@@ -50,7 +55,7 @@ class VoucherController extends Controller
 
         // return $request;
         $request->validate([
-            'customer_name' => 'required|min:5|max:20',
+            'customer_name' => 'required|min:5|max:30',
             'phone_number' => 'required',
             'records' => 'array',
             'records.*.product_id' => 'required|exists:products,id',

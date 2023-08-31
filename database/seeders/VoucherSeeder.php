@@ -44,8 +44,9 @@ class VoucherSeeder extends Seeder
                 'tax' => $tax,
                 'net_total' => $net_total,
                 'user_id' => rand(1, 2),
-                'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
-                // 'created_at' => Carbon::now(),
+                // 'created_at' => $faker->dateTimeBetween('-5 months', 'now'),
+                'created_at' => Carbon::now(),
+                // 'created_at' => Carbon::now()->subMonths(rand(1, 12)),
                 'updated_at' => Carbon::now()
             ]);
         }

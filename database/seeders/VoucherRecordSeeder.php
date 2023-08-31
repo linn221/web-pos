@@ -22,19 +22,20 @@ class VoucherRecordSeeder extends Seeder
 
         $voucherIds = Voucher::orderBy('id', 'asc')->pluck('id');
         $productsIds = Product::orderBy('id', 'asc')->pluck('id');
-        $price = Product::orderBy('id', 'asc')->pluck('sale_price');
+        // $price = Product::orderBy('id', 'asc')->pluck('sale_price');
         // $price = DB::table('products')->pluck('sale_price');
 
         foreach ($voucherIds as $voucherId) {
             $quantity = $faker->numberBetween(1, 20);
-
+            $productsId =  $faker->randomElement($productsIds);
             DB::table('voucher_records')->insert([
                 'voucher_id' => $voucherId,
-                'product_id' => $faker->randomElement($productsIds),
+                'product_id' => $productsId,
                 'quantity' => $quantity,
-                'cost' => $quantity * $faker->randomElement($price),
-                'created_at' => $faker->dateTimeBetween('-3 months', 'now'),
-                // 'created_at' => Carbon::now(),
+                'cost' => $quantity * Product::find($productsId)->sale_price,
+                // 'created_at' => $faker->dateTimeBetween('-5 months', 'now'),
+                'created_at' => Carbon::now(),
+                // 'created_at' => Carbon::now()->subMonths(rand(1, 12)),
                 'updated_at' => Carbon::now()
             ]);
             // foreach (range(1, 5) as $index) {
