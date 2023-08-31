@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,9 @@ class VoucherFactory extends Factory
         $total = rand(2, 16) * 150;
         $tax = $total * 0.02;
         $net_total = $total + $tax;
+        $carbon = new Carbon();
+        $carbon->subMonths(rand(1,3));
+        $carbon->addDays(rand(1, 30));
         return [
             'customer_name' => fake()->name(),
             'phone_number' => fake()->phoneNumber(),
@@ -27,8 +31,10 @@ class VoucherFactory extends Factory
             'total' => $total,
             'tax' => $tax,
             'net_total' => $net_total,
-            'user_id' => 1,
-            'more_information' => fake()->sentence(rand(1, 13))
+            'user_id' => rand(1, 3),
+            'more_information' => fake()->sentence(rand(1, 13)),
+            'created_at' => $carbon->getTimestamp(),
+            'updated_at' => $carbon->getTimestamp()
             // 'more_information' => fake()->paragraph(rand(1, 3))
         ];
     }
