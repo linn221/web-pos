@@ -17,14 +17,20 @@ class DailySalesOverviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        if (Auth::user()->role == 'admin') {
+            $voucherBuilder = Voucher::query();
+        } else {
+            $voucherBuilder = Voucher::where('user_id', Auth::id());
+        }
         return [
             'vouchers' => VoucherResource::collection($this),
             'daily_summary' => [
                 // @refactor, use local scope
-                "total_vouchers" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->count('id'),
-                "total_cash" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('total'),
-                "total_tax" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('tax'),
-                "total" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('net_total')
+                // @refactor, eager loading
+                "total_voucher" => $voucherBuilder->whereDate("created_at", Carbon::today())->count('id'),
+                "total_cash" => $voucherBuilder->whereDate("created_at", Carbon::today())->sum('total'),
+                "total_tax" => $voucherBuilder->whereDate("created_at", Carbon::today())->sum('tax'),
+                "total" => $voucherBuilder->whereDate("created_at", Carbon::today())->sum('net_total')
             ]
         ];
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,11 @@ Route::prefix('v1')->group(function () {
             Route::post('/voucher/empty-bin', [VoucherController::class, 'emptyBin']);
             Route::post('/voucher/recycle-bin', [VoucherController::class, 'recycleBin']);
         });
+
+
+        // finance
+        Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
+        Route::get('/finance/close-sale', [FinanceController::class, 'closeSale']);
 
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);
