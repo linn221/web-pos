@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DailySalesOverviewResource;
 use App\Http\Resources\VoucherResource;
 use App\Models\DailySaleOverview;
 use App\Models\Voucher;
@@ -18,19 +19,16 @@ class FinanceController extends Controller
         // return $date;
         $carbon = Carbon::createFromFormat('Y-m-d',  $date); 
         // return $carbon;
-        $vouchers = Voucher::whereDate('created_at', $date)->get();
+        $vouchers = Voucher::withCount('voucher_records')->whereDate('created_at', $date)->paginate(15)->withQueryString();
         $saleOverview = DailySaleOverview
             ::where('day', $carbon->format('d'))
             ->where('month', $carbon->format('m'))
             ->where('year', $carbon->format('Y'))
-            ->get();
+            ->first();
+        $saleOverview->vouchers = $vouchers;
         // return VoucherResource::collection($vouchers);
-        return response()->json([
-            'vouchers' => $vouchers,
-            'saleOverView' => $saleOverview
-        ]);
 
-
+        return new DailySalesOverviewResource($saleOverview);
     }
 
     public function closeSale(Request $request)

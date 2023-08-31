@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\DailySalesOverviewResource;
+use App\Http\Resources\RecentSaleOverviewResource;
 use App\Http\Resources\VoucherCollectionResource;
 use App\Http\Resources\VoucherDetailResource;
 use App\Http\Resources\VoucherResource;
@@ -32,7 +33,7 @@ class VoucherController extends Controller {
                 ->get();
         }
         // return new VoucherCollectionResource($vouchers);
-        return new DailySalesOverviewResource($vouchers);
+        return new RecentSaleOverviewResource($vouchers);
         // return response()->json([
         //     'vouchers' => VoucherResource::collection($vouchers),
         //     'dailyVoucherReprot' => [
