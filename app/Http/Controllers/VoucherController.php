@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DailySalesOverviewResource;
+use App\Http\Resources\VoucherCollectionResource;
 use App\Http\Resources\VoucherDetailResource;
 use App\Http\Resources\VoucherResource;
 use App\Models\Product;
@@ -29,7 +31,17 @@ class VoucherController extends Controller {
                 ->withCount('voucher_records')
                 ->get();
         }
-        return VoucherResource::collection($vouchers);
+        // return new VoucherCollectionResource($vouchers);
+        return new DailySalesOverviewResource($vouchers);
+        // return response()->json([
+        //     'vouchers' => VoucherResource::collection($vouchers),
+        //     'dailyVoucherReprot' => [
+        //         "Total Vouchers" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->count('id'),
+        //         "Total Cash" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('total'),
+        //         "Total Tax" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('tax'),
+        //         "Total" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('net_total')
+        //     ]
+        // ]);
         //
     }
 
