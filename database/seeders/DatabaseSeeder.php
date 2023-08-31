@@ -24,6 +24,26 @@ class DatabaseSeeder extends Seeder
             'gender' => 'male'
         ]);
 
+        \App\Models\User::factory()->create([
+            'name' => 'Steve',
+            'email' => 'steve@gmail.com',
+            'role' => 'staff',
+            'phone_number' => '0999999999',
+            'address' => 'New York',
+            'dob' => '9/11/2001',
+            'gender' => 'male'
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Stu',
+            'email' => 'stu@gmail.com',
+            'role' => 'staff',
+            'phone_number' => '0999999999',
+            'address' => 'New York',
+            'dob' => '9/11/2001',
+            'gender' => 'male'
+        ]);
+
         $this->call([
             BrandSeeder::class,
             ProductSeeder::class,
