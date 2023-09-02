@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -42,6 +44,11 @@ class DatabaseSeeder extends Seeder
             'address' => 'New York',
             'dob' => '9/11/2001',
             'gender' => 'male'
+        ]);
+
+        Setting::create([
+            'key' => 'sale_status',
+            'value' => null
         ]);
 
         $this->call([

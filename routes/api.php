@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
+
+
         Route::get('/voucher/restore/{id}', [VoucherController::class, 'restore']);
         Route::get('/voucher/show-trash', [VoucherController::class, 'showTrash']);
 
@@ -42,6 +44,7 @@ Route::prefix('v1')->group(function () {
         // finance
         Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
         Route::get('/finance/close-sale', [FinanceController::class, 'closeSale']);
+        Route::get('/finance/sale-close-check', [FinanceController::class, 'checkSaleClose']);
 
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);
