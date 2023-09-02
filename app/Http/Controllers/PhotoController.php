@@ -22,7 +22,7 @@ class PhotoController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->role === "admin") {
+        if (Auth::user()->role == "admin") {
             $photos = Photo::all();
         } else {
             $photos = Auth::user()->photos;
@@ -68,22 +68,6 @@ class PhotoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
@@ -92,9 +76,7 @@ class PhotoController extends Controller
         $photo = Photo::find($id);
 
         if (is_null($photo)) {
-            return response()->json([
-                'message' => 'photo is not found'
-            ]);
+            abort(404, 'photo is not found');
         }
 
         Storage::delete($photo->url);
@@ -102,7 +84,7 @@ class PhotoController extends Controller
 
 
         return response()->json([
-            "message" => "photo has delete"
+            "message" => "photo has been deleted"
         ]);
     }
 
@@ -112,9 +94,7 @@ class PhotoController extends Controller
 
         $photos = Photo::whereIn('id', $request->ids)->get();
         if (count($photos) === 0) {
-            return response()->json([
-                'message' => 'not found'
-            ]);
+            abort(404, 'photo is not found');
         }
 
         foreach ($photos as $photo) {

@@ -111,11 +111,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('view', $voucher);
@@ -130,11 +126,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('delete', $voucher);
@@ -150,9 +142,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher does not exist');
         }
 
         $this->authorize('restore', $voucher);
@@ -175,9 +165,7 @@ class VoucherController extends Controller {
 
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher not found');
         }
 
         // @fix

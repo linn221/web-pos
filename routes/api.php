@@ -47,7 +47,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/finance/sale-close-check', [FinanceController::class, 'checkSaleClose']);
 
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
-        Route::apiResource('photo', PhotoController::class);
+        Route::apiResource('photo', PhotoController::class)->except(['show', 'update']);
         Route::apiResource('brand', BrandController::class);
         Route::apiResource('product', ProductController::class);
         Route::apiResource('stock', StockController::class)->except(['update']);

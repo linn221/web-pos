@@ -53,11 +53,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
 
         if (is_null($brand)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Brand not found",
-
-            ], 404);
+            abort(404, 'Brand not found');
         }
 
         // return response()->json($brand);
@@ -75,11 +71,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
 
         if (is_null($brand)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Brand not found",
-
-            ], 404);
+            abort(404, 'Brand not found');
         }
 
         $brand->update([
@@ -105,11 +97,7 @@ class BrandController extends Controller
 
         $brand = Brand::find($id);
         if (is_null($brand)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Brand not found",
-
-            ], 404);
+            abort(404, 'Brand not found');
         }
 
         $brand->delete();
