@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -13,22 +13,28 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
+        $categories = Category::all();
+        return $categories;
         //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
+        Gate::authorize('isAdmin');
+
+        $request->validate([
+            'name' => 'required|unique:categories|min:3|max:15',
+            'more_information' => 'nullable|string|min:5|max:1000'
+        ]);
+        $category = new Category;
+        $category->name = $request->name;
+        $category->more_information = $request->more_information;
+        $category->save();
+        return $category;
+
         //
     }
 
@@ -41,18 +47,11 @@ class CategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request, Category $category)
     {
+        Gate::authorize('isAdmin');
         //
     }
 
@@ -61,6 +60,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        Gate::authorize('isAdmin');
         //
     }
 }
