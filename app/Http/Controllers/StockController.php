@@ -55,10 +55,7 @@ class StockController extends Controller
     {
         $stock = Stock::find($id);
         if (is_null($stock)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Stock not found",
-            ], 404);
+            abort(404, 'stock not found');
         }
 
         return new StockResource($stock);
@@ -73,11 +70,7 @@ class StockController extends Controller
 
         $stock = Stock::find($id);
         if (is_null($stock)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Stock not found",
-
-            ], 404);
+            abort(404, 'stock not found');
         }
 
         $stock->delete();

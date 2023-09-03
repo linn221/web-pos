@@ -16,11 +16,12 @@ class FinanceController extends Controller
     //
     public function daily(Request $request, $date)
     {
+        // @fix validate date
         Gate::authorize('isAdmin');
         // return $date;
-        $carbon = Carbon::createFromFormat('Y-m-d',  $date); 
+        $carbon = Carbon::createFromFormat('d-m-Y',  $date); 
         // return $carbon;
-        $vouchers = Voucher::withCount('voucher_records')->whereDate('created_at', $date)->paginate(15)->withQueryString();
+        $vouchers = Voucher::withCount('voucher_records')->thatDay($date)->paginate(15)->withQueryString();
         $saleOverview = DailySaleOverview
             ::where('day', $carbon->format('d'))
             ->where('month', $carbon->format('m'))
@@ -57,10 +58,10 @@ class FinanceController extends Controller
         // @security Update DailySaleOverview instead of creating a new one
 
         $dailySaleOverview = DailySaleOverview::create([
-                "total_voucher" => Voucher::whereDate("created_at", Carbon::today())->count('id'),
-                "total_cash" => Voucher::whereDate("created_at", Carbon::today())->sum('total'),
-                "total_tax" => Voucher::whereDate("created_at", Carbon::today())->sum('tax'),
-                "total" => Voucher::whereDate("created_at", Carbon::today())->sum('net_total'),
+                "total_voucher" => Voucher::today()->count('id'),
+                "total_cash" => Voucher::today()->sum('total'),
+                "total_tax" => Voucher::today()->sum('tax'),
+                "total" => Voucher::today()->sum('net_total'),
                 "day" => $date->format('d'),
                 "month" => $date->format('m'),
                 "year" => $date->format('Y'),

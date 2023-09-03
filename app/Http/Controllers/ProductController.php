@@ -51,11 +51,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         return new ProductDetailResource($product);
@@ -71,11 +67,7 @@ class ProductController extends Controller
         Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         $this->authorize('update', $product);
@@ -103,11 +95,7 @@ class ProductController extends Controller
         Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         $this->authorize('delete', $product);
