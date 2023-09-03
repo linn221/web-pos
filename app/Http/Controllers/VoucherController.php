@@ -15,16 +15,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class VoucherController extends Controller {
+class VoucherController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+
+
+
         if (Gate::allows('isAdmin')) {
             $vouchers = Voucher::latest("id")
                 ->withCount('voucher_records')
-                ->paginate(15)->withQueryString();
+                ->paginate(5)->withQueryString();
         } else {
             // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
             // $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
@@ -169,12 +173,12 @@ class VoucherController extends Controller {
     {
         if (Gate::allows('isAdmin')) {
             $trashed_vouchers = Voucher::onlyTrashed()
-            ->withCount('voucher_records')
-            ->get();
+                ->withCount('voucher_records')
+                ->get();
         } else {
             $trashed_vouchers = Auth::user()->vouchers()->onlyTrashed()
-            ->withCount('voucher_records')
-            ->get();
+                ->withCount('voucher_records')
+                ->get();
         }
 
         return VoucherResource::collection($trashed_vouchers);
@@ -204,7 +208,6 @@ class VoucherController extends Controller {
         return response()->json([
             'message' => 'Trash has been emptied'
         ], 204);
-
     }
 
     // isAdmin middleware

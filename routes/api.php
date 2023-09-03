@@ -41,7 +41,9 @@ Route::prefix('v1')->group(function () {
 
         // finance
         Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
+        Route::get('/finance/monthly/{year}/{month}', [FinanceController::class, 'monthly']);
         Route::get('/finance/close-sale', [FinanceController::class, 'closeSale']);
+        Route::get('finance/custom-sale-overview/{startDate}/{endDate}', [FinanceController::class, 'customSaleOverview']);
 
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class);

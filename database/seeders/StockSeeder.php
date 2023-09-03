@@ -18,7 +18,7 @@ class StockSeeder extends Seeder
         $stocks = [];
         // $product_stock = [];
         for ($i = 1; $i <= 30; $i++) {
-            $currentQuantity = rand(1, 100);
+            $currentQuantity = rand(100, 1000);
             $stocks[] = [
                 "user_id" => 1,
                 "product_id" => $i,
