@@ -22,7 +22,8 @@ class VoucherFactory extends Factory
         $tax = $total * 0.02;
         $net_total = $total + $tax;
         $carbon = new Carbon();
-        $carbon->subMonths(rand(1,3));
+        // $carbon->subMonths(rand(1,3));
+        $carbon->subMonth();
         $carbon->addDays(rand(1, 30));
         return [
             'customer_name' => fake()->name(),
