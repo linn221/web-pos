@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
@@ -46,6 +47,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/finance/close-sale', [FinanceController::class, 'closeSale']);
         Route::get('/finance/sale-close-check', [FinanceController::class, 'checkSaleClose']);
 
+
         Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class)->except(['show', 'update']);
         Route::apiResource('brand', BrandController::class);
@@ -53,6 +55,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('stock', StockController::class)->except(['update']);
         Route::apiResource('voucher', VoucherController::class)->except(['update']);
         Route::apiResource('user', UserController::class)->except(['destroy']);
+        Route::apiResource('category', CategoryController::class)->except(['destroy']);
 
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);

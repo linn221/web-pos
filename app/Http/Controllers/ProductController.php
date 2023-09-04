@@ -39,6 +39,7 @@ class ProductController extends Controller
             'more_information' => $request->more_information,
             'photo' => $request->photo,
             'brand_id' => $request->brand_id,
+            'category_id' => $request->category_id
         ]);
 
         return new ProductDetailResource($product);
