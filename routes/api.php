@@ -55,7 +55,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('stock', StockController::class)->except(['update']);
         Route::apiResource('voucher', VoucherController::class)->except(['update']);
         Route::apiResource('user', UserController::class)->except(['destroy']);
-        Route::apiResource('category', CategoryController::class)->except(['destroy', 'show']);
+        Route::apiResource('category', CategoryController::class)->except(['destroy']);
 
         Route::get('/logout', [ApiAuthController::class, 'logout']);
         Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
