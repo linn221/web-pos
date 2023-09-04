@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest("id")->paginate(15)->withQueryString();
+        $products = Product::with(['category', 'brand'])->latest("id")->paginate(15)->withQueryString();
 
         return ProductResource::collection($products);
     }
@@ -81,6 +81,7 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
+            'category_id' => $request->category_id,
             'photo' => $request->photo,
         ]);
 
