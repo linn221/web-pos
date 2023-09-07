@@ -14,13 +14,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         //
-        $categories = [
-            'food',
-            'electric',
-            'paper',
-            'drink',
-            'fruits'
-        ];
+        $categories = config('seeding.categories');
 
         foreach($categories as $category) {
             Category::create([
