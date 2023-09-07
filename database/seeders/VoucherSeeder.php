@@ -14,7 +14,7 @@ class VoucherSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < config('seeding.voucher_count'); $i++) {
             $voucher = Voucher::factory()->create();
             VoucherRecord::factory(rand(1, 5))->create([
                 'voucher_id' => $voucher->id
