@@ -71,6 +71,7 @@ Route::prefix('v1')->group(function () {
             Route::post('/change-password', 'changePassword');
             Route::post('/change-staff-password', 'modifyPassword');
             Route::post('/ban-user/{id}', 'ban');
+            Route::get('/profile', 'current');
         });
         Route::apiResource('user', UserController::class)->except(['destroy']);
 
@@ -83,9 +84,5 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
-});
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('login')->middleware('guest');
 });

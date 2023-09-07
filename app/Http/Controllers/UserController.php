@@ -29,7 +29,7 @@ class UserController extends Controller
         // Gate::authorize('register');
 
         Gate::authorize('isAdmin');
-        
+
         $request->validate([
             "name" => "nullable|min:3",
             "photo" => "nullable",
@@ -156,12 +156,30 @@ class UserController extends Controller
             abort(404, 'user not found');
         }
 
-        $user->update([
-            'role' => 'ban'
-        ]);
-        return response()->json([
-            'message' => 'User has been banned successfully'
-        ]);
+        if ($user->role != 'ban') {
+
+            // log out all sessions
+            foreach ($user->tokens as $token) {
+                $token->delete();
+            }
+
+            $user->update([
+                'role' => 'ban'
+            ]);
+
+            return response()->json([
+                'message' => 'User has been banned successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'message' => 'User has been banned already'
+            ]);
+        }
         //
+    }
+
+    public function current() {
+        return Auth::user();
     }
 }
