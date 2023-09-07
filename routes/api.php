@@ -29,7 +29,6 @@ Route::prefix('v1')->group(function () {
     Route::middleware("auth:sanctum")->group(function () {
         
         // photo
-        Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
         Route::apiResource('photo', PhotoController::class)->except(['show', 'update']);
 
         // brand
@@ -47,7 +46,7 @@ Route::prefix('v1')->group(function () {
         // voucher (sales)
         Route::controller(VoucherController::class)
         ->prefix('/voucher')->group(function () {
-            Route::get('/restore/{id}', 'restore');
+            Route::post('/restore/{id}', 'restore');
             Route::get('/show-trash', 'showTrash');
 
             Route::middleware('can:isAdmin')->group(function () {
@@ -61,9 +60,8 @@ Route::prefix('v1')->group(function () {
         // finance
         Route::controller(FinanceController::class)
         ->prefix('/finance')->group(function () {
+            Route::post('/close-sale', 'closeSale');
             Route::get('/daily/{date}', 'daily');
-            // @fix method to post
-            Route::get('/close-sale', 'closeSale');
             Route::get('/sale-close-check', 'checkSaleClose');
         });
 
@@ -79,7 +77,7 @@ Route::prefix('v1')->group(function () {
         // auth
         Route::controller(ApiAuthController::class)
         ->group(function() {
-            Route::get('/logout', 'logout');
+            Route::post('/logout', 'logout');
             Route::post("/logout-all", 'logoutAll');
             Route::get("/tokens", 'tokens');
         });

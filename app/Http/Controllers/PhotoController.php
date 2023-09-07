@@ -89,22 +89,22 @@ class PhotoController extends Controller
     }
 
 
-    public function multipleDestroy(Request $request)
-    {
+    // public function multipleDestroy(Request $request)
+    // {
 
-        $photos = Photo::whereIn('id', $request->ids)->get();
-        if (count($photos) === 0) {
-            abort(404, 'photo is not found');
-        }
+    //     $photos = Photo::whereIn('id', $request->ids)->get();
+    //     if (count($photos) === 0) {
+    //         abort(404, 'photo is not found');
+    //     }
 
-        foreach ($photos as $photo) {
-            Storage::delete($photo->url);
-        }
+    //     foreach ($photos as $photo) {
+    //         Storage::delete($photo->url);
+    //     }
 
-        Photo::destroy($request->ids);
+    //     Photo::destroy($request->ids);
 
-        return response()->json([
-            'message' => "you have deleted multiple photos ",
-        ]);
-    }
+    //     return response()->json([
+    //         'message' => "you have deleted multiple photos ",
+    //     ]);
+    // }
 }
