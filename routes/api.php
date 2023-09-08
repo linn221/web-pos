@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
@@ -23,49 +24,69 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::prefix('v1')->group(function () {
+
     Route::middleware("auth:sanctum")->group(function () {
+        
+        // photo
+        Route::apiResource('photo', PhotoController::class)->except(['show', 'update']);
 
+        // brand
+        Route::apiResource('brand', BrandController::class);
 
-        Route::get('/voucher/restore/{id}', [VoucherController::class, 'restore']);
-        Route::get('/voucher/show-trash', [VoucherController::class, 'showTrash']);
+        // category
+        Route::apiResource('category', CategoryController::class)->except(['destroy']);
 
-        Route::middleware('can:isAdmin')->group(function () {
-            Route::post('/voucher/force-delete/{id}', [VoucherController::class, 'forceDelete']);
-            Route::post('/voucher/empty-bin', [VoucherController::class, 'emptyBin']);
-            Route::post('/voucher/recycle-bin', [VoucherController::class, 'recycleBin']);
-        });
+        // product
+        Route::apiResource('product', ProductController::class);
 
+        // stock
+        Route::apiResource('stock', StockController::class)->except(['update']);
 
-        // finance
+        // voucher (sales)
+        Route::controller(VoucherController::class)
+        ->prefix('/voucher')->group(function () {
+            Route::post('/restore/{id}', 'restore');
+            Route::get('/show-trash', 'showTrash');
+          
         Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
         Route::get('/finance/monthly/{year}/{month}', [FinanceController::class, 'monthly']);
         Route::get('finance/custom-sale-overview/{startDate}/{endDate}', [FinanceController::class, 'customSaleOverview']);
 
-        Route::get('/finance/close-sale', [FinanceController::class, 'closeSale']);
-        Route::get('/finance/sale-close-check', [FinanceController::class, 'checkSaleClose']);
-
-        Route::post('/photo/multiple-delete', [PhotoController::class, 'multipleDestroy']);
-        Route::apiResource('photo', PhotoController::class);
-        Route::apiResource('brand', BrandController::class);
-        Route::apiResource('product', ProductController::class);
-        Route::apiResource('stock', StockController::class)->except(['update']);
+            Route::middleware('can:isAdmin')->group(function () {
+                Route::post('/force-delete/{id}', 'forceDelete');
+                Route::post('/empty-bin', 'emptyBin');
+                Route::post('/recycle-bin', 'recycleBin');
+            });
+        });
         Route::apiResource('voucher', VoucherController::class)->except(['update']);
+
+        // finance
+        Route::controller(FinanceController::class)
+        ->prefix('/finance')->group(function () {
+            Route::post('/close-sale', 'closeSale');
+            Route::get('/daily/{date}', 'daily');
+            Route::get('/sale-close-check', 'checkSaleClose');
+        });
+
+        // user account
+        Route::controller(UserController::class)
+        ->group(function() {
+            Route::post('/change-password', 'changePassword');
+            Route::post('/change-staff-password', 'modifyPassword');
+            Route::post('/ban-user/{id}', 'ban');
+            Route::get('/profile', 'current');
+        });
         Route::apiResource('user', UserController::class)->except(['destroy']);
 
-        Route::get('/logout', [ApiAuthController::class, 'logout']);
-        Route::post("/logout-all", [ApiAuthController::class, 'logoutAll']);
-        Route::get("/tokens", [ApiAuthController::class, 'tokens']);
-        Route::post('/ban-user/{id}', [UserController::class, 'ban']);
-        // Route::post('/register-staff', [ApiAuthController::class, 'registerStaff']);
-
-        Route::post('/change-password', [UserController::class, 'changePassword']);
-        Route::post('/change-staff-password', [UserController::class, 'modifyPassword']);
+        // auth
+        Route::controller(ApiAuthController::class)
+        ->group(function() {
+            Route::post('/logout', 'logout');
+            Route::post("/logout-all", 'logoutAll');
+            Route::get("/tokens", 'tokens');
+        });
     });
 
-    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('login')->middleware('guest');
 });

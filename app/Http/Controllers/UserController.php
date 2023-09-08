@@ -29,7 +29,7 @@ class UserController extends Controller
         // Gate::authorize('register');
 
         Gate::authorize('isAdmin');
-        
+
         $request->validate([
             "name" => "nullable|min:3",
             "photo" => "nullable",
@@ -66,9 +66,7 @@ class UserController extends Controller
         Gate::authorize('isAdmin');
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json([
-                'message' => 'user not found'
-            ], 404);
+            abort(404, 'user not found');
         }
 
         return new UserResource($user);
@@ -93,9 +91,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json([
-                'message' => 'user not found'
-            ], 404);
+            abort(404, 'user not found');
         }
 
         $user->update([
@@ -138,9 +134,7 @@ class UserController extends Controller
         ]);
         $user = User::find($request->user_id);
         if (is_null($user)) {
-            return response()->json([
-                'message' => 'User not found'
-            ]);
+            abort(404, 'user not found');
         }
 
         $user->password = Hash::make($request->new_password);
@@ -159,16 +153,33 @@ class UserController extends Controller
 
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json([
-                'message' => 'user not found'
-            ], 404);
+            abort(404, 'user not found');
         }
-        $user->update([
-            'role' => 'ban'
-        ]);
-        return response()->json([
-            'message' => 'User has been banned'
-        ]);
+
+        if ($user->role != 'ban') {
+
+            // log out all sessions
+            foreach ($user->tokens as $token) {
+                $token->delete();
+            }
+
+            $user->update([
+                'role' => 'ban'
+            ]);
+
+            return response()->json([
+                'message' => 'User has been banned successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'message' => 'User has been banned already'
+            ]);
+        }
         //
+    }
+
+    public function current() {
+        return Auth::user();
     }
 }

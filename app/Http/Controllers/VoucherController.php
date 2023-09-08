@@ -26,11 +26,9 @@ class VoucherController extends Controller {
                 ->withCount('voucher_records')
                 ->paginate(15)->withQueryString();
         } else {
-            // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
-            // $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
-            $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())
+            $vouchers = Auth::user()->vouchers()->today()
                 ->withCount('voucher_records')
-                ->get();
+                ->paginate(15)->withQueryString();
         }
         // return new VoucherCollectionResource($vouchers);
         return new RecentSaleOverviewResource($vouchers);
@@ -113,11 +111,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('view', $voucher);
@@ -132,11 +126,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('delete', $voucher);
@@ -152,9 +142,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher does not exist');
         }
 
         $this->authorize('restore', $voucher);
@@ -167,27 +155,17 @@ class VoucherController extends Controller {
 
     public function showTrash()
     {
-        if (Gate::allows('isAdmin')) {
-            $trashed_vouchers = Voucher::onlyTrashed()
-            ->withCount('voucher_records')
-            ->get();
-        } else {
-            $trashed_vouchers = Auth::user()->vouchers()->onlyTrashed()
-            ->withCount('voucher_records')
-            ->get();
-        }
-
+        $trashed_vouchers = Voucher::onlyTrashed()->ownByUser()->withCount('voucher_records')->get();
         return VoucherResource::collection($trashed_vouchers);
     }
 
-    // isAdmin middleware
     public function forceDelete(string $id)
     {
+        Gate::authorize('isAdmin');
+
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher not found');
         }
 
         // @fix
@@ -197,9 +175,10 @@ class VoucherController extends Controller {
         ], 204);
     }
 
-    // isAdmin middleware
     public function emptyBin()
     {
+        Gate::authorize('isAdmin');
+
         Voucher::onlyTrashed()->forceDelete();
         return response()->json([
             'message' => 'Trash has been emptied'
@@ -207,11 +186,11 @@ class VoucherController extends Controller {
 
     }
 
-    // isAdmin middleware
     public function recycleBin()
     {
-        Voucher::onlyTrashed()->restore();
+        Gate::authorize('isAdmin');
 
+        Voucher::onlyTrashed()->restore();
         return response()->json([
             'message' => 'Trash has been restored'
         ], 201);

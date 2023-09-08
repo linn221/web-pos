@@ -13,7 +13,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(30)->create();
+        Product::factory(config('seeding.product_count'))->create();
         //
     }
 }

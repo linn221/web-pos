@@ -20,9 +20,11 @@ class ApiAuthController extends Controller
         ]);
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Username or password wrong'
-            ]);
+            abort(401, 'user name or password wrong');
+        }
+
+        if (Auth::user()->role == 'ban') {
+            abort(403, 'You have been banned');
         }
 
         return Auth::user()->createToken($request->device ?? 'unknown')->plainTextToken;
