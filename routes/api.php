@@ -48,6 +48,10 @@ Route::prefix('v1')->group(function () {
         ->prefix('/voucher')->group(function () {
             Route::post('/restore/{id}', 'restore');
             Route::get('/show-trash', 'showTrash');
+          
+        Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
+        Route::get('/finance/monthly/{year}/{month}', [FinanceController::class, 'monthly']);
+        Route::get('finance/custom-sale-overview/{startDate}/{endDate}', [FinanceController::class, 'customSaleOverview']);
 
             Route::middleware('can:isAdmin')->group(function () {
                 Route::post('/force-delete/{id}', 'forceDelete');
