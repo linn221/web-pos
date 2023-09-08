@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     Route::middleware("auth:sanctum")->group(function () {
-        
+
         // photo
         Route::apiResource('photo', PhotoController::class)->except(['show', 'update']);
 
@@ -45,47 +45,47 @@ Route::prefix('v1')->group(function () {
 
         // voucher (sales)
         Route::controller(VoucherController::class)
-        ->prefix('/voucher')->group(function () {
-            Route::post('/restore/{id}', 'restore');
-            Route::get('/show-trash', 'showTrash');
-          
-        Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
-        Route::get('/finance/monthly/{year}/{month}', [FinanceController::class, 'monthly']);
-        Route::get('finance/custom-sale-overview/{startDate}/{endDate}', [FinanceController::class, 'customSaleOverview']);
+            ->prefix('/voucher')->group(function () {
+                Route::post('/restore/{id}', 'restore');
+                Route::get('/show-trash', 'showTrash');
 
-            Route::middleware('can:isAdmin')->group(function () {
-                Route::post('/force-delete/{id}', 'forceDelete');
-                Route::post('/empty-bin', 'emptyBin');
-                Route::post('/recycle-bin', 'recycleBin');
+                Route::middleware('can:isAdmin')->group(function () {
+                    Route::post('/force-delete/{id}', 'forceDelete');
+                    Route::post('/empty-bin', 'emptyBin');
+                    Route::post('/recycle-bin', 'recycleBin');
+                });
             });
-        });
         Route::apiResource('voucher', VoucherController::class)->except(['update']);
 
         // finance
+        Route::get('/finance/monthly/{date}', [FinanceController::class, 'monthly']);
+        Route::get('/finance/daily/{date}', [FinanceController::class, 'daily']);
+        Route::get('finance/custom-sale-overview/{startDate}/{endDate}', [FinanceController::class, 'customSaleOverview']);
+
         Route::controller(FinanceController::class)
-        ->prefix('/finance')->group(function () {
-            Route::post('/close-sale', 'closeSale');
-            Route::get('/daily/{date}', 'daily');
-            Route::get('/sale-close-check', 'checkSaleClose');
-        });
+            ->prefix('/finance')->group(function () {
+                Route::post('/close-sale', 'closeSale');
+                Route::get('/daily/{date}', 'daily');
+                Route::get('/sale-close-check', 'checkSaleClose');
+            });
 
         // user account
         Route::controller(UserController::class)
-        ->group(function() {
-            Route::post('/change-password', 'changePassword');
-            Route::post('/change-staff-password', 'modifyPassword');
-            Route::post('/ban-user/{id}', 'ban');
-            Route::get('/profile', 'current');
-        });
+            ->group(function () {
+                Route::post('/change-password', 'changePassword');
+                Route::post('/change-staff-password', 'modifyPassword');
+                Route::post('/ban-user/{id}', 'ban');
+                Route::get('/profile', 'current');
+            });
         Route::apiResource('user', UserController::class)->except(['destroy']);
 
         // auth
         Route::controller(ApiAuthController::class)
-        ->group(function() {
-            Route::post('/logout', 'logout');
-            Route::post("/logout-all", 'logoutAll');
-            Route::get("/tokens", 'tokens');
-        });
+            ->group(function () {
+                Route::post('/logout', 'logout');
+                Route::post("/logout-all", 'logoutAll');
+                Route::get("/tokens", 'tokens');
+            });
     });
 
     Route::post('/login', [ApiAuthController::class, 'login'])->name('login')->middleware('guest');

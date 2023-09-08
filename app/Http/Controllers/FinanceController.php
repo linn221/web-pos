@@ -25,7 +25,9 @@ class FinanceController extends Controller
 
         $carbon = Carbon::createFromFormat('d-m-Y',  $date); 
         // return $carbon;
-        $vouchers = Voucher::withCount('voucher_records')->thatDay($date)->paginate(15)->withQueryString();
+        $vouchers = Voucher::withCount('voucher_records')
+            ->whereDate('created_at', $carbon)
+            ->paginate(15)->withQueryString();
         $saleOverview = DailySaleOverview
             ::where('day', $carbon->format('d'))
             ->where('month', $carbon->format('m'))
@@ -59,12 +61,15 @@ class FinanceController extends Controller
 
 
 
-    public function monthly($year, $month)
+    public function monthly(string $date)
     {
+        $carbon = Carbon::createFromFormat('d-m-Y',  $date); 
+        $numericMonth = $carbon->format('m');
+        $year = $carbon->format('Y');
 
         // Convert month name to numeric month with Carbon
-        $numericMonth = (Carbon::parse($month))->format('m');
-        $monthlySaleOverviews = DailySaleOverview::where('month', $numericMonth)->where('year', $year)->latest('id')->paginate(10)->withQueryString();
+        // $numericMonth = (Carbon::parse($month))->format('m');
+        $monthlySaleOverviews = DailySaleOverview::where('month', $numericMonth)->where('year', $year)->latest('id')->paginate(15)->withQueryString();
 
         $monthlySaleSummary = [
             'total_days' => DailySaleOverview::where('month', $numericMonth)->where('year', $year)->count('id'),
