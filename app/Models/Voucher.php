@@ -29,13 +29,13 @@ class Voucher extends Model
 
     }
 
-    public function scopeThatDay($builder, string $date)
-    {
-        $carbon = Carbon::createFromFormat('d-m-Y', $date);
+    // public function scopeThatDay($builder, string $date)
+    // {
+    //     $carbon = Carbon::createFromFormat('d-m-Y', $date);
 
-        return $builder->whereDate('created_at', $carbon);
+    //     return $builder->whereDate('created_at', $carbon);
 
-    }
+    // }
 
     public function scopeOwnByUser($builder)
     {
