@@ -18,7 +18,7 @@ class DailySalesOverviewResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'vouchers' => VoucherResource::collection($this->vouchers),
+            'vouchers' => VoucherResource::collection($this->vouchers)->resource,
             'daily_summary' => [
                 // 'x' => $this->x,
                 'total_voucher' => $this->total_voucher,

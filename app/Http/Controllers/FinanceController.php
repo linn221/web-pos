@@ -23,7 +23,7 @@ class FinanceController extends Controller
         Gate::authorize('isAdmin');
         // return $date;
 
-        $carbon = Carbon::createFromFormat('d-m-Y',  $date); 
+        $carbon = Carbon::createFromFormat('d-m-Y',  $date);
         // return $carbon;
         $vouchers = Voucher::withCount('voucher_records')
             ->whereDate('created_at', $carbon)
@@ -44,17 +44,19 @@ class FinanceController extends Controller
 
         $customSalesDateVouchers = Voucher::query()
             ->whereBetween('created_at', [$starteDate, $endDate])
-            ->get();
+            ->paginate(10)->withQueryString();
+
+        $customSalesOverview = CustomSalesOverviewResoruce::collection($customSalesDateVouchers);
         $customSaleDateSummary = [
-            'total_voucher' => $customSalesDateVouchers->pluck('id')->count(),
-            'total_cash' => $customSalesDateVouchers->pluck('total')->sum(),
-            'total_tax' => $customSalesDateVouchers->pluck('tax')->sum(),
-            'total' => $customSalesDateVouchers->pluck('net_total')->sum()
+            'total_voucher' => Voucher::whereBetween('created_at', [$starteDate, $endDate])->count('id'),
+            'total_cash' => Voucher::whereBetween('created_at', [$starteDate, $endDate])->sum('total'),
+            'total_tax' => Voucher::whereBetween('created_at', [$starteDate, $endDate])->sum('tax'),
+            'total' => Voucher::whereBetween('created_at', [$starteDate, $endDate])->sum('net_total')
         ];
 
 
         return response()->json([
-            'custom_sale_overview_vouchers' =>  CustomSalesOverviewResoruce::collection($customSalesDateVouchers),
+            'custom_sale_vouchers' => $customSalesOverview->resource,
             'summary' => $customSaleDateSummary
         ]);
     }
@@ -63,13 +65,14 @@ class FinanceController extends Controller
 
     public function monthly(string $date)
     {
-        $carbon = Carbon::createFromFormat('d-m-Y',  $date); 
+        $carbon = Carbon::createFromFormat('d-m-Y',  $date);
         $numericMonth = $carbon->format('m');
         $year = $carbon->format('Y');
 
         // Convert month name to numeric month with Carbon
         // $numericMonth = (Carbon::parse($month))->format('m');
         $monthlySaleOverviews = DailySaleOverview::where('month', $numericMonth)->where('year', $year)->latest('id')->paginate(15)->withQueryString();
+
 
         $monthlySaleSummary = [
             'total_days' => DailySaleOverview::where('month', $numericMonth)->where('year', $year)->count('id'),
@@ -82,7 +85,7 @@ class FinanceController extends Controller
 
         return response()->json([
 
-            'monthly_sale_overview' => MonthlySalesOverviewResoruce::collection($monthlySaleOverviews),
+            'monthly_sale_overview' => MonthlySalesOverviewResoruce::collection($monthlySaleOverviews)->resource,
             'monthly_sale_summary' => $monthlySaleSummary
         ]);
     }
