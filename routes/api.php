@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
 use App\Models\Photo;
@@ -42,6 +43,9 @@ Route::prefix('v1')->group(function () {
 
         // stock
         Route::apiResource('stock', StockController::class)->except(['update']);
+        Route::get('/stock-report', [StockReportController::class, 'productWithStockLevel']);
+        Route::get('/weekly-best-seller-brand', [StockReportController::class, 'weeklyBestSellerBrands']);
+
 
         // voucher (sales)
         Route::controller(VoucherController::class)
