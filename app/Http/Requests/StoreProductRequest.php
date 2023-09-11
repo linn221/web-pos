@@ -30,6 +30,7 @@ class StoreProductRequest extends FormRequest
             'unit' => 'required',
             'more_information' => 'nullable',
             'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
             // @fix check if photo exists in the media
             'photo' => 'nullable'
             // 'photo' => 'nullable|mimes:png,jpeg,gif'

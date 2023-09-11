@@ -11,9 +11,11 @@ use PDO;
 class VoucherPolicy
 {
 
-    public function after(User $user)
+    public function before(User $user)
     {
-        return $user->role == 'admin';
+        if ($user->role == 'admin') {
+            return true;
+        }
     }
 
     /**

@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest("id")->paginate(15)->withQueryString();
+        $products = Product::with(['category', 'brand'])->latest("id")->paginate(15)->withQueryString();
 
         return ProductResource::collection($products);
     }
@@ -39,6 +39,7 @@ class ProductController extends Controller
             'more_information' => $request->more_information,
             'photo' => $request->photo,
             'brand_id' => $request->brand_id,
+            'category_id' => $request->category_id
         ]);
 
         return new ProductDetailResource($product);
@@ -51,11 +52,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         return new ProductDetailResource($product);
@@ -71,11 +68,7 @@ class ProductController extends Controller
         Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         $this->authorize('update', $product);
@@ -88,6 +81,7 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'more_information' => $request->more_information,
             'brand_id' => $request->brand_id,
+            'category_id' => $request->category_id,
             'photo' => $request->photo,
         ]);
 
@@ -103,11 +97,7 @@ class ProductController extends Controller
         Gate::authorize('isAdmin');
         $product = Product::find($id);
         if (is_null($product)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Product not found",
-
-            ], 404);
+            abort(404, 'product not found');
         }
 
         $this->authorize('delete', $product);

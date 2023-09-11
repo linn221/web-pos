@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Setting;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,10 +15,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-
         \App\Models\User::factory()->create([
-            'name' => 'Admin 1',
-            'email' => 'a1@gmail.com',
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'role' => 'admin',
             'phone_number' => '0999999999',
             'address' => 'New York',
@@ -25,9 +26,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory()->create([
-            'name' => 'Admin 2',
-            'email' => 'a2@gmail.com',
-            'role' => 'admin',
+            'name' => 'Steve',
+            'email' => 'steve@gmail.com',
+            'role' => 'staff',
             'phone_number' => '0999999999',
             'address' => 'New York',
             'dob' => '9/11/2001',
@@ -35,20 +36,27 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory()->create([
-            'name' => 'Admin 3',
-            'email' => 'a3@gmail.com',
-            'role' => 'admin',
+            'name' => 'Stu',
+            'email' => 'stu@gmail.com',
+            'role' => 'staff',
             'phone_number' => '0999999999',
             'address' => 'New York',
             'dob' => '9/11/2001',
             'gender' => 'male'
+        ]);
+
+        Setting::create([
+            'key' => 'sale_status',
+            'value' => null
         ]);
 
         $this->call([
             BrandSeeder::class,
+            CategorySeeder::class,
             ProductSeeder::class,
             StockSeeder::class,
             VoucherSeeder::class,
+            DailySaleOverviewSeeder::class
         ]);
     }
 }

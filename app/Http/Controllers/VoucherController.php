@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DailySalesOverviewResource;
+use App\Http\Resources\RecentSaleOverviewResource;
+use App\Http\Resources\VoucherCollectionResource;
 use App\Http\Resources\VoucherDetailResource;
 use App\Http\Resources\VoucherResource;
 use App\Models\Product;
@@ -20,13 +23,24 @@ class VoucherController extends Controller {
     {
         if (Gate::allows('isAdmin')) {
             $vouchers = Voucher::latest("id")
+                ->withCount('voucher_records')
                 ->paginate(15)->withQueryString();
         } else {
-            // $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
-            // $vouchers = Voucher::where("user_id", Auth::id())->whereDate('created_at', Carbon::today())->get();
-            $vouchers = Auth::user()->vouchers()->whereDate('created_at', Carbon::today())->get();
+            $vouchers = Auth::user()->vouchers()->today()
+                ->withCount('voucher_records')
+                ->paginate(15)->withQueryString();
         }
-        return VoucherResource::collection($vouchers);
+        // return new VoucherCollectionResource($vouchers);
+        return new RecentSaleOverviewResource($vouchers);
+        // return response()->json([
+        //     'vouchers' => VoucherResource::collection($vouchers),
+        //     'dailyVoucherReprot' => [
+        //         "Total Vouchers" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->count('id'),
+        //         "Total Tax" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('tax'),
+        //         "Total Cash" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('total'),
+        //         "Total" => Voucher::where('user_id', Auth::id())->whereDate("created_at", Carbon::today())->sum('net_total')
+        //     ]
+        // ]);
         //
     }
 
@@ -65,13 +79,16 @@ class VoucherController extends Controller {
             $quantity = $record['quantity'];
             // @fix, return error/informative message on insufficient stock
             if ($product->total_stock >= $quantity) {
+                // create voucher records
                 $cost = $product->sale_price * $quantity;
+                // @refactor, insert through voucher
                 VoucherRecord::create([
                     'product_id' => $product->id,
                     'cost' => $cost,
                     'voucher_id' => $voucher->id,
                     'quantity' => $quantity
                 ]);
+
                 $total += $cost;
             }
         }
@@ -94,11 +111,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('view', $voucher);
@@ -113,11 +126,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                // "success" => false,
-                "message" => "Voucher not found",
-
-            ], 404);
+            abort(404, 'voucher not found');
         }
 
         $this->authorize('delete', $voucher);
@@ -133,9 +142,7 @@ class VoucherController extends Controller {
     {
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher does not exist');
         }
 
         $this->authorize('restore', $voucher);
@@ -148,23 +155,17 @@ class VoucherController extends Controller {
 
     public function showTrash()
     {
-        if (Gate::allows('isAdmin')) {
-            $trashed_vouchers = Voucher::onlyTrashed()->get();
-        } else {
-            $trashed_vouchers = Auth::user()->vouchers()->onlyTrashed()->get();
-        }
-
+        $trashed_vouchers = Voucher::onlyTrashed()->ownByUser()->withCount('voucher_records')->get();
         return VoucherResource::collection($trashed_vouchers);
     }
 
-    // isAdmin middleware
     public function forceDelete(string $id)
     {
+        Gate::authorize('isAdmin');
+
         $voucher = Voucher::onlyTrashed()->find($id);
         if (is_null($voucher)) {
-            return response()->json([
-                'message' => 'Voucher does on exist'
-            ]);
+            abort(404, 'voucher not found');
         }
 
         // @fix
@@ -174,9 +175,10 @@ class VoucherController extends Controller {
         ], 204);
     }
 
-    // isAdmin middleware
     public function emptyBin()
     {
+        Gate::authorize('isAdmin');
+
         Voucher::onlyTrashed()->forceDelete();
         return response()->json([
             'message' => 'Trash has been emptied'
@@ -184,11 +186,11 @@ class VoucherController extends Controller {
 
     }
 
-    // isAdmin middleware
     public function recycleBin()
     {
-        Voucher::onlyTrashed()->restore();
+        Gate::authorize('isAdmin');
 
+        Voucher::onlyTrashed()->restore();
         return response()->json([
             'message' => 'Trash has been restored'
         ], 201);

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->double('actual_price');
             $table->double('sale_price');
             $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->cascadeOnDelete();
             $table->bigInteger('total_stock')->default(0);
             $table->string('unit');
             $table->text('more_information')->nullable();

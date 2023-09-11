@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Stock;
+use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use App\Observers\StockObserver;
+use App\Observers\VoucherObserver;
 use App\Observers\VoucherRecordObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -31,6 +33,7 @@ class EventServiceProvider extends ServiceProvider
     {
         Stock::observe(StockObserver::class);
         VoucherRecord::observe(VoucherRecordObserver::class);
+        Voucher::observe(VoucherObserver::class);
         //
     }
 
