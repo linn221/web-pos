@@ -15,12 +15,18 @@ class Brand extends Model
         "company",
         "photo",
         "agent",
-        "phone_no", 
+        "phone_no",
         "description"
     ];
 
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+
+    public function stocks()
+    {
+        return $this->hasManyThrough(Stock::class, Product::class);
     }
 }

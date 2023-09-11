@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
         // stock
         Route::apiResource('stock', StockController::class)->except(['update']);
         Route::get('/stock-report', [StockReportController::class, 'productWithStockLevel']);
+        Route::get('/weekly-best-seller-brand', [StockReportController::class, 'weeklyBestSellerBrands']);
+
 
         // voucher (sales)
         Route::controller(VoucherController::class)
