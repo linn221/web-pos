@@ -17,15 +17,14 @@ class VoucherRecordFactory extends Factory
      */
     public function definition(): array
     {
-        $product = Product::find(rand(1, 10));
-        $qty = rand(1, 10);
+        $product = Product::find(rand(1, config('seeding.product_count')));
+        $qty = rand(1, config('seeding.voucher_record.quantity'));
         $cost = $product->sale_price * $qty;
         return [
             // 'voucher_id' => ,
             'product_id' => $product->id,
             'quantity' => $qty,
             'cost' => $cost
-
         ];
     }
 }
