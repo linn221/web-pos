@@ -47,9 +47,9 @@ class SaleReportController extends Controller
 
     private function getStats(Collection $sale_overview) : array
     {
-        $highest = $sale_overview->sortByDesc('total')->first()->only(['id', 'date', 'total']);
-        $lowest = $sale_overview->sortBy('total')->first()->only(['id', 'date', 'total']);
+        $highest = $sale_overview->sortByDesc('total')->first();
         $average = $sale_overview->avg('total');
+        $lowest = $sale_overview->sortBy('total')->first();
 
         return compact('highest', 'lowest', 'average');
     }
@@ -72,6 +72,7 @@ class SaleReportController extends Controller
 
     public function summaryMonth(Request $request)
     {
+        // return $request;
         $now = Carbon::now();
         $current_year = (int) $now->format('Y');
         $current_month = (int) $now->format('m');
