@@ -8,6 +8,7 @@ use Carbon\Carbon;
 // use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use PDO;
 
 class SaleReportController extends Controller
@@ -122,15 +123,47 @@ class SaleReportController extends Controller
 
     public function bestSaleProducts()
     {
-        $vouchers = Voucher::today()->with('voucher_records')->get();
-        $voucher_records = $vouchers->map(function (Voucher $voucher, int $key) {
-            return $voucher->voucher_records;
-        });
-        return $voucher_records;
+        // $vouchers = Voucher::today()->with('voucher_records')->get();
+        // $voucher_records = $vouchers->map(function (Voucher $voucher, int $key) {
+        //     return $voucher->voucher_records;
+        // });
+        // return $voucher_records;
+        $sql_product_sold_count = DB::table('vouchers')
+            ->join('voucher_records', 'voucher_records.voucher_id', '=', 'vouchers.id')
+            ->whereBetween('vouchers.created_at', ['2023-09-11', '2023-09-15'])
+            ->selectRaw('voucher_records.product_id as product_id, sum(voucher_records.quantity) as sold_amount')
+            ->groupBy('voucher_records.product_id')
+            ->orderBy('sold_amount', 'desc');
+    
+        $products_with_sale_count = DB::table('products')
+            ->joinSub($sql_product_sold_count, 'product_count', 'products.id', '=', 'product_count.product_id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->select(['products.id as product_id', 'products.name as product_name', 'product_count.sold_amount as sold_amount', 'brands.id as brand_id', 'brands.name as brand_name'])
+            ->orderBy('sold_amount', 'desc')
+            ->get();
+        // dd($sql);
+        return $products_with_sale_count;
     }
 
     public function bestSaleBrands()
     {
+        $sql_product_sold_count = DB::table('vouchers')
+            ->join('voucher_records', 'voucher_records.voucher_id', '=', 'vouchers.id')
+            ->whereBetween('vouchers.created_at', ['2023-09-11', '2023-09-15'])
+            ->selectRaw('voucher_records.product_id as product_id, sum(voucher_records.quantity) as sold_amount')
+            ->groupBy('voucher_records.product_id')
+            ->orderBy('sold_amount', 'desc');
+    
+        $brands_with_sale_count = DB::table('products')
+            ->joinSub($sql_product_sold_count, 'product_count', 'products.id', '=', 'product_count.product_id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            // ->select(['pr'product_count.sold_amount as sold_amount', 'brands.id as brand_id', 'brands.name as brand_name'])
+            ->selectRaw('brands.id as brand_id, sum(product_count.sold_amount) as sale_count')
+            ->groupBy('products.brand_id')
+            ->orderBy('sale_count', 'desc')
+            ->get();
+        // dd($sql);
+        return $brands_with_sale_count;
     }
     //
 }
