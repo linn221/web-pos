@@ -20,4 +20,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function voucher_records()
+    {
+        return $this->hasMany(VoucherRecord::class);
+    }
 }

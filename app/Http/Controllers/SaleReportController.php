@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailySaleOverview;
+use App\Models\Voucher;
 use Carbon\Carbon;
 // use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -103,17 +104,17 @@ class SaleReportController extends Controller
         // return response()->json(compact(['sales_this_month', 'weekly_total', 'current_day', 'current_month']));
     }
 
-    public function statisticsThatDay(Request $request)
-    {
-        $this_day = Carbon::createFromFormat('d-m-Y', $request->date);
-        // compare with yesterday BY DEFAULT
-        $that_day = $this_day->subDay();
-        if ($request->has('compare')) {
-            if ($request->compare == 'lastWeek') {
-                $that_day = $this_day->subWeek();
-            }
-        }
-    }
+    // public function statisticsThatDay(Request $request)
+    // {
+    //     $this_day = Carbon::createFromFormat('d-m-Y', $request->date);
+    //     // compare with yesterday BY DEFAULT
+    //     $that_day = $this_day->subDay();
+    //     if ($request->has('compare')) {
+    //         if ($request->compare == 'lastWeek') {
+    //             $that_day = $this_day->subWeek();
+    //         }
+    //     }
+    // }
 
     public function weeklyBrief()
     {
@@ -121,6 +122,11 @@ class SaleReportController extends Controller
 
     public function bestSaleProducts()
     {
+        $vouchers = Voucher::today()->with('voucher_records')->get();
+        $voucher_records = $vouchers->map(function (Voucher $voucher, int $key) {
+            return $voucher->voucher_records;
+        });
+        return $voucher_records;
     }
 
     public function bestSaleBrands()
