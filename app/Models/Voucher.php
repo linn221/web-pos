@@ -31,15 +31,14 @@ class Voucher extends Model
 
     public function scopeToday($builder)
     {
-        return $builder->whereDate('created_at', Carbon::today());
-
+        return $builder->whereDate('vouchers.created_at', Carbon::today());
     }
 
     public function scopeThatDay($builder, string $date)
     {
         $carbon = Carbon::createFromFormat('d-m-Y', $date);
 
-        return $builder->whereDate('created_at', $carbon);
+        return $builder->whereDate('vouchers.created_at', $carbon);
 
     }
 
@@ -48,12 +47,20 @@ class Voucher extends Model
         $now = Carbon::now();
         $end_date = $now->format('Y-m-d');
         $start_date = $now->startOfWeek()->format('Y-m-d');
-        return $builder->whereBetween('created_at', [$start_date, $end_date]);
+        return $builder->whereBetween('vouchers.created_at', [$start_date, $end_date]);
+    }
+
+    public function scopeThisMonth($builder)
+    {
+        $now = Carbon::now();
+        $end_date = $now->format('Y-m-d');
+        $start_date = $now->startOfMonth()->format('Y-m-d');
+        return $builder->whereBetween('vouchers.created_at', [$start_date, $end_date]);
     }
 
     public function scopeDateBetween($builder, string $from_str, string $to_str)
     {
-        return $builder->whereBetween('created_at', [$from_str, $to_str]);
+        return $builder->whereBetween('vouchers.created_at', [$from_str, $to_str]);
     }
 
     public function scopeOwnByUser($builder)

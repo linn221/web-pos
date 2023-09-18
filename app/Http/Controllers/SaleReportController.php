@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailySaleOverview;
+use App\Models\Product;
 use App\Models\Voucher;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 // use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -13,10 +15,6 @@ use PDO;
 
 class SaleReportController extends Controller
 {
-
-    public function dailySaleAnalysis()
-    {
-    }
 
     public function summaryWeek(Request $request)
     {
@@ -31,10 +29,10 @@ class SaleReportController extends Controller
             ->where('month', $current_month)
             ->whereBetween('day', [$start_day, $current_day])
             ->get();
-        
+
         // return $daily_overview[0]->only(['id', 'total']);
 
-        $daily_overview_r = $daily_overview->map(function(DailySaleOverview $value, $key){
+        $daily_overview_r = $daily_overview->map(function (DailySaleOverview $value, $key) {
             return $value->only(['id', 'total', 'day', 'date']);
         });
 
@@ -47,7 +45,7 @@ class SaleReportController extends Controller
         ]);
     }
 
-    private function getStats(Collection $sale_overview) : array
+    private function getStats(Collection $sale_overview): array
     {
         $highest = $sale_overview->sortByDesc('total')->first();
         $average = $sale_overview->avg('total');
@@ -56,7 +54,7 @@ class SaleReportController extends Controller
         return compact('highest', 'lowest', 'average');
     }
 
-    private function getWeeklyOverview(Collection $sale_overview, int $end_day=31) : Collection
+    private function getWeeklyOverview(Collection $sale_overview, int $end_day = 31): Collection
     {
         $week = 1;
         $day = 1;
@@ -64,7 +62,7 @@ class SaleReportController extends Controller
         while ($day <= $end_day) {
             $weekly_overview[] = [
                 'week' => $week,
-                'total' => $sale_overview->whereBetween('day', [$day, $day+6])->sum('total')
+                'total' => $sale_overview->whereBetween('day', [$day, $day + 6])->sum('total')
             ];
             $week += 1;
             $day += 7;
@@ -117,53 +115,49 @@ class SaleReportController extends Controller
     //     }
     // }
 
-    public function weeklyBrief()
+    public function bestSaleProducts(Request $request)
     {
+        $voucher_builder = Voucher::query();
+        if ($request->has('today')) {
+            $voucher_builder->today();
+        } else if ($request->has('thisWeek')) {
+            $voucher_builder->thisWeek();
+        } else if ($request->has('thisMonth')) {
+            $voucher_builder->thisMonth();
+        } else {
+            $voucher_builder->whereBetween('vouchers.created_at', ['2023-09-11', '2023-09-15']);
+        }
+
+        $best_sale_products = $this->productsWithSaleCount($voucher_builder)
+            ->get();
+        return $best_sale_products;
     }
 
-    public function bestSaleProducts()
+    public function bestSaleBrands(Request $request)
     {
-        // $vouchers = Voucher::today()->with('voucher_records')->get();
-        // $voucher_records = $vouchers->map(function (Voucher $voucher, int $key) {
-        //     return $voucher->voucher_records;
-        // });
-        // return $voucher_records;
-        $sql_product_sold_count = DB::table('vouchers')
-            ->join('voucher_records', 'voucher_records.voucher_id', '=', 'vouchers.id')
-            ->whereBetween('vouchers.created_at', ['2023-09-11', '2023-09-15'])
-            ->selectRaw('voucher_records.product_id as product_id, sum(voucher_records.quantity) as sold_amount')
-            ->groupBy('voucher_records.product_id')
-            ->orderBy('sold_amount', 'desc');
-    
-        $products_with_sale_count = DB::table('products')
-            ->joinSub($sql_product_sold_count, 'product_count', 'products.id', '=', 'product_count.product_id')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->select(['products.id as product_id', 'products.name as product_name', 'product_count.sold_amount as sold_amount', 'brands.id as brand_id', 'brands.name as brand_name'])
-            ->orderBy('sold_amount', 'desc')
-            ->get();
-        // dd($sql);
-        return $products_with_sale_count;
+        $voucher_builder = Voucher::query();
+        if ($request->has('today')) {
+            $voucher_builder->today();
+        } else if ($request->has('thisWeek')) {
+            $voucher_builder->thisWeek();
+        } else if ($request->has('thisMonth')) {
+            $voucher_builder->thisMonth();
+        }
+
+        $best_sale_products = $this->productsWithSaleCount($voucher_builder)
+            ->with('brand')->get();
+        return $best_sale_products;
     }
 
-    public function bestSaleBrands()
+    private function productsWithSaleCount($voucher_builder): Builder
     {
-        $sql_product_sold_count = DB::table('vouchers')
-            ->join('voucher_records', 'voucher_records.voucher_id', '=', 'vouchers.id')
-            ->whereBetween('vouchers.created_at', ['2023-09-11', '2023-09-15'])
-            ->selectRaw('voucher_records.product_id as product_id, sum(voucher_records.quantity) as sold_amount')
-            ->groupBy('voucher_records.product_id')
-            ->orderBy('sold_amount', 'desc');
-    
-        $brands_with_sale_count = DB::table('products')
-            ->joinSub($sql_product_sold_count, 'product_count', 'products.id', '=', 'product_count.product_id')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            // ->select(['pr'product_count.sold_amount as sold_amount', 'brands.id as brand_id', 'brands.name as brand_name'])
-            ->selectRaw('brands.id as brand_id, sum(product_count.sold_amount) as sale_count')
-            ->groupBy('products.brand_id')
-            ->orderBy('sale_count', 'desc')
-            ->get();
-        // dd($sql);
-        return $brands_with_sale_count;
+        $subQuery = $voucher_builder->join('voucher_records', 'voucher_records.voucher_id', '=', 'vouchers.id')
+            ->selectRaw('voucher_records.product_id as product_id, sum(voucher_records.quantity) as sale_count')
+            ->groupBy('product_id');
+            // ->orderBy('sale_count', 'desc');
+        $products_builder = Product::joinSub($subQuery, 'product_sale_count', 'product_sale_count.product_id', '=', 'products.id')
+        ->orderBy('sale_count', 'desc');
+        // ->get();
+        return $products_builder;
     }
-    //
 }

@@ -54,6 +54,7 @@ Route::prefix('v1')->group(function () {
                 Route::get('/current-week', 'summaryWeek');
                 Route::get('/current-month', 'summaryMonth');
                 Route::get('/best-sale-products', 'bestSaleProducts');
+                Route::get('/best-sale-brands', 'bestSaleBrands');
                 // Route::get('/current-week', 'summaryWeek');
         });
 
