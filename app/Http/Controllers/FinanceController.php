@@ -99,32 +99,44 @@ class FinanceController extends Controller
 
 
         // @refactor?
-        // update setting
+        // repetitive checking of status
         $today = $date->format('d-m-Y');
         $sale_close_status = Setting::key('sale_status')->first();
         if ($sale_close_status->value == $today) {
-            if (!$request->has('force')) {
+            // if sale is close
+            if ($request->has('false')) {
+                $sale_close_status->value = 'false';
+                $sale_close_status->save();
+                DailySaleOverview::latest()->first()->delete();
+
                 return response()->json([
-                    'message' => 'sale is already close for today. force this action by ?force query suffix'
+                    'message' => 'sale is open again'
                 ]);
+
             }
-        } else {
-            $sale_close_status->value = $today;
-            $sale_close_status->save();
+
+            return response()->json([
+                'message' => 'sale is already close'
+            ]);
         }
 
-        // @security Update DailySaleOverview instead of creating a new one
+        $sale_close_status->value = $today;
+        $sale_close_status->save();
 
         $dailySaleOverview = DailySaleOverview::create([
-            "total_voucher" => Voucher::whereDate("created_at", Carbon::today())->count('id'),
-            "total_cash" => Voucher::whereDate("created_at", Carbon::today())->sum('total'),
-            "total_tax" => Voucher::whereDate("created_at", Carbon::today())->sum('tax'),
-            "total" => Voucher::whereDate("created_at", Carbon::today())->sum('net_total'),
+            "total_voucher" => Voucher::today()->count('id'),
+            "total_cash" => Voucher::today()->sum('total'),
+            "total_tax" => Voucher::today()->sum('tax'),
+            "total" => Voucher::today()->sum('net_total'),
             "day" => $date->format('d'),
             "month" => $date->format('m'),
             "year" => $date->format('Y')
         ]);
-        return $dailySaleOverview;
+
+        return response()->json([
+            'message' => 'sale close success',
+            'overview' => $dailySaleOverview
+        ]);
     }
 
     public function checkSaleClose()

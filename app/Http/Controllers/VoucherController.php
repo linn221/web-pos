@@ -8,6 +8,7 @@ use App\Http\Resources\VoucherCollectionResource;
 use App\Http\Resources\VoucherDetailResource;
 use App\Http\Resources\VoucherResource;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use Carbon\Carbon;
@@ -49,6 +50,12 @@ class VoucherController extends Controller {
      */
     public function store(Request $request)
     {
+        if (Setting::key('sale_status')->first()->value == Carbon::today()->format('d-m-Y')) {
+            return response()->json([
+                'message' => 'Salse is close. Open it with /finance/close-sale?false if you are admin',
+                'request' => $request->all()
+            ], 401);
+        }
         // return $request;
         $request->validate([
             // @fix makes customer_name optional
