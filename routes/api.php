@@ -6,11 +6,13 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleReportController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
 use App\Models\Photo;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,16 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('stock', StockController::class)->except(['update']);
         Route::get('/stock-report', [StockReportController::class, 'productWithStockLevel']);
         Route::get('/weekly-best-seller-brand', [StockReportController::class, 'weeklyBestSellerBrands']);
+
+        // sale report
+        Route::controller(SaleReportController::class)
+            ->prefix('sale-report')->group(function() {
+                Route::get('/current-week', 'summaryWeek');
+                Route::get('/current-month', 'summaryMonth');
+                Route::get('/best-sale-products', 'bestSaleProducts');
+                Route::get('/best-sale-brands', 'bestSaleBrands');
+                // Route::get('/current-week', 'summaryWeek');
+        });
 
 
         // voucher (sales)

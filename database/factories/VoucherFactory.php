@@ -20,9 +20,8 @@ class VoucherFactory extends Factory
 
         // random date
         $carbon = new Carbon();
-        // $carbon->subMonths(rand(1,3));
-        $carbon->subMonth();
-        $carbon->addDays(rand(1, 30));
+        $month = $carbon->subMonths(rand(1,config('seeding.month_count')));
+        $carbon->addDays(rand(1, $month->endOfMonth()->format('d')));
         return [
             'customer_name' => fake()->name(),
             'phone_number' => fake()->phoneNumber(),

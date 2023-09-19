@@ -17,7 +17,8 @@ class DailySaleOverviewSeeder extends Seeder
     {
         //
         // $carbon = (new Carbon())->subMonths(3);
-        $carbon = (new Carbon())->subMonth();
+        $carbon = (new Carbon())->subMonths(config('seeding.month_count'));
+        // @refactor, ->startOfWeek() ?
         while (!$carbon->isCurrentDay()) {
             $dailySaleOverview = DailySaleOverview::create([
                 "total_voucher" => Voucher::whereDate("created_at", $carbon->toDate())->count('id'),

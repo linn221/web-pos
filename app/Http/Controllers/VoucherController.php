@@ -89,10 +89,9 @@ class VoucherController extends Controller {
                 // create voucher records
                 $cost = $product->sale_price * $quantity;
                 // @refactor, insert through voucher
-                VoucherRecord::create([
+                $voucher->voucher_records()->create([
                     'product_id' => $product->id,
                     'cost' => $cost,
-                    'voucher_id' => $voucher->id,
                     'quantity' => $quantity
                 ]);
 
