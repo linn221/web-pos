@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\DailySaleOverview;
 use App\Models\Product;
 use App\Models\Voucher;
@@ -146,7 +147,18 @@ class SaleReportController extends Controller
 
         $best_sale_products = $this->productsWithSaleCount($voucher_builder)
             ->with('brand')->get();
-        return $best_sale_products;
+
+        $brand_sale_counts = collect();
+        foreach($best_sale_products as $product) {
+            if (is_null($product->brand->sale_count)) {
+                $product->brand->sale_count = (int) $product->sale_count;
+                $brand_sale_counts->push($product->brand);
+            } else {
+                $product->brand->sale_count += $product->sale_count;
+            }
+        }
+        return $brand_sale_counts->sortByDesc('sale_count')->values();
+        // return $brand_sale_counts;
     }
 
     private function productsWithSaleCount($voucher_builder): Builder
