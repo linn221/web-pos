@@ -14,17 +14,47 @@ class VoucherSeeder extends Seeder
      */
     public function run(): void
     {
-        $voucher_count = config('seeding.voucher_count');
-        Voucher::factory()->count($voucher_count)->create();
-        for ($i = 1; $i <= $voucher_count; $i++) {
-            VoucherRecord::factory()->count(rand(1, config('seeding.voucher_record.count')))->create([
-                'voucher_id' => $i
-            ]);
-            
-            $voucher = Voucher::find($i);
-            $total_cost = $voucher->voucher_records()->sum('cost');
-            $voucher->net_total = $total_cost;
-            $voucher->save();
-        }
+        // voucher with 5 records
+        Voucher::factory()
+        ->has(
+            VoucherRecord::factory()->count(config('seeding.voucher_record.count')),
+            'voucher_records'
+        )
+        ->count(config('seeding.voucher_count') * 0.4)
+        ->create();
+
+        // voucher with 3 records
+        Voucher::factory()
+        ->has(
+            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 2),
+            'voucher_records'
+        )
+        ->count(config('seeding.voucher_count') * 0.3)
+        ->create();
+
+        // voucher with 4 records
+        Voucher::factory()
+        ->has(
+            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 1),
+            'voucher_records'
+        )
+        ->count(config('seeding.voucher_count') * 0.2)
+        ->create();
+
+        // voucher with 6 records
+        Voucher::factory()
+        ->has(
+            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 1),
+            'voucher_records'
+        )
+        ->count(config('seeding.voucher_count') * 0.1)
+        ->create();
+        // @
+        // for ($i = 1; $i <= $voucher_count; $i++) {
+        //     $voucher = Voucher::find($i);
+        //     $total_cost = $voucher->voucher_records()->sum('cost');
+        //     $voucher->net_total = $total_cost;
+        //     $voucher->save();
+        // }
     }
 }

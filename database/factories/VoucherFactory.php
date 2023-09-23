@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Voucher;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +21,7 @@ class VoucherFactory extends Factory
 
         // random date
         $carbon = new Carbon();
-        $month = $carbon->subMonths(rand(1,config('seeding.month_count')));
+        $month = $carbon->subMonths(rand(1, config('seeding.month_count')));
         $carbon->addDays(rand(1, $month->endOfMonth()->format('d')));
         return [
             'customer_name' => fake()->name(),
@@ -29,11 +30,24 @@ class VoucherFactory extends Factory
             'total' => 0,
             'tax' => 0,
             'net_total' => 0,
-            'user_id' => rand(1, 3),
+            'user_id' => rand(2, 3),
             'more_information' => fake()->sentence(rand(1, 13)),
             'created_at' => $carbon->getTimestamp(),
             'updated_at' => $carbon->getTimestamp()
             // 'more_information' => fake()->paragraph(rand(1, 3))
         ];
+    }
+
+    public function configure(): static
+    {
+        return $this->afterMaking(function (Voucher $voucher) {
+            // ...
+        })->afterCreating(function (Voucher $voucher) {
+            $total_cost = $voucher->voucher_records()->sum('cost');
+            $voucher->total = $total_cost;
+            $voucher->tax = $total_cost * config('seeding.tax');
+            $voucher->net_total = $voucher->total + $voucher->tax;
+            $voucher->save();
+        });
     }
 }

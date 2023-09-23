@@ -16,21 +16,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class VoucherController extends Controller {
+class VoucherController extends Controller
+{
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         if (Gate::allows('isAdmin')) {
-            $vouchers = Voucher::latest("id")
-                ->withCount('voucher_records')
-                ->paginate(15)->withQueryString();
+            $voucher_q = Voucher::query();
         } else {
-            $vouchers = Auth::user()->vouchers()->today()
-                ->withCount('voucher_records')
-                ->paginate(15)->withQueryString();
+            $voucher_q = Auth::user()->vouchers()->today();
         }
+        $voucher_q->withCount('voucher_records');
+        if ($request->has('order') && in_array($request->order, ['id', 'created_at', 'voucher_number'])) {
+            $voucher_q->orderBy($request->order, 'desc');
+        } else {
+            $voucher_q->orderBy('created_at', 'desc');
+        }
+
+        $vouchers = $voucher_q->paginate(15)->withQueryString();
         // return new VoucherCollectionResource($vouchers);
         return new RecentSaleOverviewResource($vouchers);
         // return response()->json([
@@ -189,7 +194,6 @@ class VoucherController extends Controller {
         return response()->json([
             'message' => 'Trash has been emptied'
         ], 204);
-
     }
 
     public function recycleBin()

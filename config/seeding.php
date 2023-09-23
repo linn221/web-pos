@@ -4,10 +4,10 @@ return [
     'brand_count' => 15,
     'categories' => [
             'food',
-            'electric',
-            'paper',
             'drink',
-            'fruits'
+            'paper',
+            'kitchen',
+            'toys'
     ],
     'product_count' => 30,
     'voucher_record' => [
@@ -15,10 +15,10 @@ return [
         'quantity' => 20
     ],
     'stock' => [
-        'count' => 100,
+        'count' => 50,
         'quantity' => 200
     ],
-    'voucher_count' => 500,
-    'month_count' => 14,
+    'voucher_count' => 50,
+    'month_count' => 1,
     'tax' => 0.04
 ];

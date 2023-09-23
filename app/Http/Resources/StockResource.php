@@ -20,8 +20,8 @@ class StockResource extends JsonResource
             'product_name' => $this->product->name,
             'quantity' => $this->quantity,
             'more_information' => $this->more_information,
-            'create_date' => $this->created_at->format('d-m-y'),
-            'update_date' => $this->updated_at->format('d-m-y'),
+            'create_date' => $this->created_at->format('d-m-Y'),
+            'update_date' => $this->updated_at->format('d-m-Y'),
         ];
     }
 }
