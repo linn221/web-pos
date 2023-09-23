@@ -15,7 +15,7 @@ return [
         'quantity' => 20
     ],
     'stock' => [
-        'count' => 100,
+        'count' => 50,
         'quantity' => 200
     ],
     'voucher_count' => 50,
