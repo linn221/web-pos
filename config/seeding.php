@@ -18,7 +18,7 @@ return [
         'count' => 50,
         'quantity' => 200
     ],
-    'voucher_count' => 50,
-    'month_count' => 1,
+    'voucher_count' => 150,
+    'month_count' => 12,
     'tax' => 0.04
 ];
