@@ -1,1141 +1,197 @@
 {
 	"info": {
 		"_postman_id": "a80f5673-57d7-4e65-8da6-98d9489c31da",
-		"name": "x-Backend",
+		"name": "WebPos API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28986898",
 		"_collection_link": "https://blue-eclipse-389874.postman.co/workspace/web-pos~813079e2-1043-42bf-aff3-83730957fd12/collection/28986898-a80f5673-57d7-4e65-8da6-98d9489c31da?action=share&source=collection_link&creator=28986898"
 	},
 	"item": [
 		{
-			"name": "Backend",
+			"name": "Authentication",
 			"item": [
 				{
-					"name": "profile",
-					"item": [
-						{
-							"name": "change password",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "current_password",
-											"value": "password",
-											"type": "text"
-										},
-										{
-											"key": "new_password",
-											"value": "asdfghjkl",
-											"type": "text"
-										}
-									]
+					"name": "staff login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "stu@gmail.com",
+									"type": "text"
 								},
-								"url": {
-									"raw": "{{pos_url}}/change-password",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"change-password"
-									]
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "logout",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{pos_url}}/logout",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"logout"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "who am i?",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{pos_url}}/profile",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"profile"
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{pos_url}}/login",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "sale-processing",
-					"item": [
-						{
-							"name": "voucher",
-							"item": [
+					"name": "admin login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
 								{
-									"name": "store voucher",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"voucher_number\": \"v123456\",\r\n    \"more_information\": \"Facere est voluptas autem ut eum ab sint dolore aut.\",\r\n    \"customer_name\": \"Khaing Thin Thin Htay\",\r\n    \"phone_number\": \"09-14248814\",\r\n    \"records\": [\r\n        {\r\n            \"product_id\": 19,\r\n            \"quantity\": 87\r\n        },\r\n        {\r\n            \"product_id\": 2,\r\n            \"quantity\": 66\r\n        }\r\n    ]\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{pos_url}}/voucher",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher"
-											]
-										}
-									},
-									"response": []
+									"key": "email",
+									"value": "admin@gmail.com",
+									"type": "text"
 								},
 								{
-									"name": "list vouchers",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher?order=voucher_number",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher"
-											],
-											"query": [
-												{
-													"key": "order",
-													"value": "voucher_number"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "show voucher",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher/42",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"42"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "delete voucher",
-									"request": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher/52",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"52"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "list soft-deleted vouchers",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/voucher/show-trash",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"show-trash"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "restore",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher/restore/25",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"restore",
-												"25"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "force delete",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher/force-delete/3",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"force-delete",
-												"3"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "empty bin",
-									"request": {
-										"method": "POST",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/voucher/empty-bin",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"empty-bin"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "recycle bin",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/voucher/recycle-bin",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"voucher",
-												"recycle-bin"
-											]
-										}
-									},
-									"response": []
+									"key": "password",
+									"value": "password",
+									"type": "text"
 								}
 							]
+						},
+						"url": {
+							"raw": "{{pos_url}}/login",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "inventory-management",
-					"item": [
-						{
-							"name": "products",
-							"item": [
+					"name": "test",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
 								{
-									"name": "store",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": [
-												{
-													"key": "name",
-													"value": "Toothpaste",
-													"type": "text"
-												},
-												{
-													"key": "brand_id",
-													"value": "1",
-													"type": "text"
-												},
-												{
-													"key": "actual_price",
-													"value": "1500",
-													"type": "text"
-												},
-												{
-													"key": "sale_price",
-													"value": "1800",
-													"type": "text"
-												},
-												{
-													"key": "unit",
-													"value": "dozen",
-													"type": "text"
-												},
-												{
-													"key": "more_information",
-													"value": "it's a toothpaste",
-													"type": "text"
-												},
-												{
-													"key": "category_id",
-													"value": "1",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/product",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"product"
-											]
-										}
-									},
-									"response": []
+									"key": "email",
+									"value": "admin@gmail.com",
+									"type": "text"
 								},
 								{
-									"name": "index",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/product?page=2",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"product"
-											],
-											"query": [
-												{
-													"key": "page",
-													"value": "2"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "show product",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/product/13",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"product",
-												"13"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": [
-												{
-													"key": "name",
-													"value": "totam",
-													"type": "text"
-												},
-												{
-													"key": "brand_id",
-													"value": "2",
-													"type": "text"
-												},
-												{
-													"key": "category_id",
-													"value": "3",
-													"type": "text"
-												},
-												{
-													"key": "actual_price",
-													"value": "1500",
-													"type": "text"
-												},
-												{
-													"key": "sale_price",
-													"value": "1800",
-													"type": "text"
-												},
-												{
-													"key": "unit",
-													"value": "dozen",
-													"type": "text"
-												},
-												{
-													"key": "more_information",
-													"value": "it's a toothpaste",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/product/30",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"product",
-												"30"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "delete",
-									"request": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/product/1",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"product",
-												"1"
-											]
-										}
-									},
-									"response": []
+									"key": "password",
+									"value": "password",
+									"type": "text"
 								}
 							]
 						},
-						{
-							"name": "brand",
-							"item": [
-								{
-									"name": "store",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": [
-												{
-													"key": "name",
-													"value": "Ash",
-													"type": "text"
-												},
-												{
-													"key": "company",
-													"value": "barman",
-													"type": "text"
-												},
-												{
-													"key": "description",
-													"value": "Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using  classes. Controllers can",
-													"type": "text"
-												},
-												{
-													"key": "agent",
-													"value": "Smith",
-													"type": "text"
-												},
-												{
-													"key": "phone_no",
-													"value": "0996534554",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/brand",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"brand"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "index",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": []
-										},
-										"url": {
-											"raw": "{{pos_url}}/brand",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"brand"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "show",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": []
-										},
-										"url": {
-											"raw": "{{pos_url}}/brand/15",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"brand",
-												"15"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update",
-									"request": {
-										"method": "PUT",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": [
-												{
-													"key": "name",
-													"value": "Butt",
-													"type": "text"
-												},
-												{
-													"key": "company",
-													"value": "butt man",
-													"type": "text"
-												},
-												{
-													"key": "description",
-													"value": "Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using  classes. Controllers can",
-													"type": "text"
-												},
-												{
-													"key": "agent",
-													"value": "Smith",
-													"type": "text"
-												},
-												{
-													"key": "phone_no",
-													"value": "0996534554",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/brand/5",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"brand",
-												"5"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "delete",
-									"request": {
-										"method": "DELETE",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/brand/5",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"brand",
-												"5"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "stock",
-							"item": [
-								{
-									"name": "store",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": [
-												{
-													"key": "product_id",
-													"value": "8",
-													"type": "text"
-												},
-												{
-													"key": "quantity",
-													"value": "30",
-													"type": "text"
-												},
-												{
-													"key": "more_information",
-													"value": "down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/stock",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"stock"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "index",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": []
-										},
-										"url": {
-											"raw": "{{pos_url}}/stock",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"stock"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "show",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/stock/6",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"stock",
-												"6"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "delete",
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/stock/1",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"stock",
-												"1"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "categories",
-							"item": [
-								{
-									"name": "list categories",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/category",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"category"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "store category",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": [
-												{
-													"key": "name",
-													"value": "electric",
-													"type": "text"
-												},
-												{
-													"key": "more_information",
-													"value": "electric products like electric fan",
-													"type": "text"
-												},
-												{
-													"key": "",
-													"value": "",
-													"type": "text",
-													"disabled": true
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/category",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"category"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "store category Copy",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "formdata",
-											"formdata": [
-												{
-													"key": "name",
-													"value": "sex toys",
-													"type": "text"
-												},
-												{
-													"key": "more_information",
-													"value": "sex toys",
-													"type": "text"
-												},
-												{
-													"key": "",
-													"value": "",
-													"type": "text",
-													"disabled": true
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/category",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"category"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "show products",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/category/1",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"category",
-												"1"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "update categories",
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": [
-												{
-													"key": "name",
-													"value": "pizza pie!",
-													"type": "text"
-												},
-												{
-													"key": "more_in",
-													"value": "",
-													"type": "text",
-													"disabled": true
-												}
-											]
-										},
-										"url": {
-											"raw": "{{pos_url}}/category/1",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"category",
-												"1"
-											]
-										}
-									},
-									"response": []
-								}
+						"url": {
+							"raw": "https://c.mmsdev.site/api/v1/login",
+							"protocol": "https",
+							"host": [
+								"c",
+								"mmsdev",
+								"site"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
 							]
 						}
-					]
+					},
+					"response": []
 				},
 				{
-					"name": "media",
-					"item": [
-						{
-							"name": "upload",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "photos[]",
-											"type": "file",
-											"src": "/home/linn/Pictures/Screenshot_2023-09-15_17-52-35.png"
-										}
-									]
+					"name": "admin login (remote credentials)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept-Encoding",
+								"value": "gzip,deflate,br",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "a3@gmail.com",
+									"type": "text"
 								},
-								"url": {
-									"raw": "{{pos_url}}/photo",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"photo"
-									]
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
 								}
-							},
-							"response": []
+							]
 						},
-						{
-							"name": "display-media",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{pos_url}}/photo",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"photo"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete",
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{pos_url}}/photo/26",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"photo",
-										"26"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "multiple-delete",
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {}
-							},
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "\r\n{\r\n    \"ids\": [1, 3]\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{pos_url}}/photo/multiple-delete",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"photo",
-										"multiple-delete"
-									]
-								}
-							},
-							"response": []
+						"url": {
+							"raw": "{{pos_url}}/login",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"login"
+							]
 						}
-					]
-				},
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "profile",
+			"item": [
 				{
 					"name": "users",
 					"item": [
@@ -1165,7 +221,7 @@
 										},
 										{
 											"key": "password",
-											"value": "asdffdsa",
+											"value": "{{password}}",
 											"type": "text"
 										},
 										{
@@ -1208,7 +264,8 @@
 									"path": [
 										"user"
 									]
-								}
+								},
+								"description": "only admin can create user"
 							},
 							"response": []
 						},
@@ -1350,7 +407,8 @@
 										"user",
 										"4"
 									]
-								}
+								},
+								"description": "staff user can update his info, admin have all previliges, staff cannot update to admin"
 							},
 							"response": []
 						},
@@ -1435,17 +493,285 @@
 										"ban-user",
 										"3"
 									]
-								}
+								},
+								"description": "only admin can ban a user, banned user can no longer log in, and all his sessions will be destroyed"
 							},
 							"response": []
 						}
 					]
 				},
 				{
-					"name": "finance",
+					"name": "change password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "current_password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "asdfghjkl",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{pos_url}}/change-password",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/logout",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "who am i?",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{pos_url}}/profile",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "media",
+			"item": [
+				{
+					"name": "upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photos[]",
+									"type": "file",
+									"src": "/home/linn/Pictures/Screenshot_2023-09-15_17-52-35.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{pos_url}}/photo",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "display-media",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/photo",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"photo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/photo/26",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"photo",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "multiple-delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"ids\": [1, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{pos_url}}/photo/multiple-delete",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"photo",
+								"multiple-delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "inventory-management",
+			"item": [
+				{
+					"name": "products",
 					"item": [
 						{
-							"name": "daily",
+							"name": "store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Toothpaste",
+											"type": "text"
+										},
+										{
+											"key": "brand_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "actual_price",
+											"value": "1500",
+											"type": "text"
+										},
+										{
+											"key": "sale_price",
+											"value": "1800",
+											"type": "text"
+										},
+										{
+											"key": "unit",
+											"value": "dozen",
+											"type": "text"
+										},
+										{
+											"key": "more_information",
+											"value": "it's a toothpaste",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{pos_url}}/product",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "index",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -1456,23 +782,21 @@
 									}
 								],
 								"url": {
-									"raw": "{{pos_url}}/finance/daily/17-09-2023",
+									"raw": "{{pos_url}}/product",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"finance",
-										"daily",
-										"17-09-2023"
+										"product"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "sale close",
+							"name": "show product",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [
 									{
 										"key": "Accept",
@@ -1481,22 +805,22 @@
 									}
 								],
 								"url": {
-									"raw": "{{pos_url}}/finance/close-sale",
+									"raw": "{{pos_url}}/product/13",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"finance",
-										"close-sale"
+										"product",
+										"13"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "open sale",
+							"name": "update",
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Accept",
@@ -1504,45 +828,160 @@
 										"type": "text"
 									}
 								],
-								"url": {
-									"raw": "{{pos_url}}/finance/close-sale?false",
-									"host": [
-										"{{pos_url}}"
-									],
-									"path": [
-										"finance",
-										"close-sale"
-									],
-									"query": [
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
 										{
-											"key": "false",
-											"value": null
+											"key": "name",
+											"value": "totam",
+											"type": "text"
+										},
+										{
+											"key": "brand_id",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "category_id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "actual_price",
+											"value": "1500",
+											"type": "text"
+										},
+										{
+											"key": "sale_price",
+											"value": "1800",
+											"type": "text"
+										},
+										{
+											"key": "unit",
+											"value": "dozen",
+											"type": "text"
+										},
+										{
+											"key": "more_information",
+											"value": "it's a toothpaste",
+											"type": "text"
 										}
 									]
+								},
+								"url": {
+									"raw": "{{pos_url}}/product/30",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"product",
+										"30"
+									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "checkSaleClose",
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/product/7",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"product",
+										"7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "brand",
+					"item": [
+						{
+							"name": "store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Ash",
+											"type": "text"
+										},
+										{
+											"key": "company",
+											"value": "barman",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using  classes. Controllers can",
+											"type": "text"
+										},
+										{
+											"key": "agent",
+											"value": "Smith",
+											"type": "text"
+										},
+										{
+											"key": "phone_no",
+											"value": "0996534554",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{pos_url}}/brand",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"brand"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "index",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{pos_url}}/finance/sale-close-check",
+									"raw": "{{pos_url}}/brand",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"finance",
-										"sale-close-check"
+										"brand"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "monthly",
+							"name": "show",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -1553,21 +992,176 @@
 									}
 								],
 								"url": {
-									"raw": "{{pos_url}}/finance/monthly/1-2-2023",
+									"raw": "{{pos_url}}/brand/15",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"finance",
-										"monthly",
-										"1-2-2023"
+										"brand",
+										"15"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "custom-sale-overview",
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Butt",
+											"type": "text"
+										},
+										{
+											"key": "company",
+											"value": "butt man",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Instead of defining all of your request handling logic as closures in your route files, you may wish to organize this behavior using  classes. Controllers can",
+											"type": "text"
+										},
+										{
+											"key": "agent",
+											"value": "Smith",
+											"type": "text"
+										},
+										{
+											"key": "phone_no",
+											"value": "0996534554",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{pos_url}}/brand/5",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"brand",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/brand/5",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"brand",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "stock",
+					"item": [
+						{
+							"name": "store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "product_id",
+											"value": "29",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "30",
+											"type": "text"
+										},
+										{
+											"key": "more_information",
+											"value": "down to the underlying model for convenient access. Once the resource is defined, it may be returned from a route or controller",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{pos_url}}/stock",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"stock"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "index",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "{{pos_url}}/stock",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"stock"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -1578,15 +1172,31 @@
 									}
 								],
 								"url": {
-									"raw": "{{pos_url}}/finance/custom-sale-overview/2023-09-01/2023-09-20",
+									"raw": "{{pos_url}}/stock/6",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"finance",
-										"custom-sale-overview",
-										"2023-09-01",
-										"2023-09-20"
+										"stock",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{pos_url}}/stock/1",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"stock",
+										"1"
 									]
 								}
 							},
@@ -1595,216 +1205,12 @@
 					]
 				},
 				{
-					"name": "report",
+					"name": "categories",
 					"item": [
 						{
-							"name": "stock-report",
-							"item": [
-								{
-									"name": "stock",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/stock-report?stock_level=in stock",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"stock-report"
-											],
-											"query": [
-												{
-													"key": "stock_level",
-													"value": "in stock"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "best-seller-brands",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/weekly-best-seller-brand",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"weekly-best-seller-brand"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "testing",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/sale-reprot-weekly",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-reprot-weekly"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						},
-						{
-							"name": "sale-report",
-							"item": [
-								{
-									"name": "this week",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/sale-report/current-week",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-report",
-												"current-week"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "this month",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/sale-report/current-month",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-report",
-												"current-month"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "that month",
-									"request": {
-										"method": "GET",
-										"header": [],
-										"url": {
-											"raw": "{{pos_url}}/sale-report/current-month?month=1",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-report",
-												"current-month"
-											],
-											"query": [
-												{
-													"key": "month",
-													"value": "1"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "best sale products",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/sale-report/best-sale-products",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-report",
-												"best-sale-products"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "best sale brands",
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											}
-										],
-										"url": {
-											"raw": "{{pos_url}}/sale-report/best-sale-brands",
-											"host": [
-												"{{pos_url}}"
-											],
-											"path": [
-												"sale-report",
-												"best-sale-brands"
-											]
-										}
-									},
-									"response": []
-								}
-							]
-						}
-					]
-				},
-				{
-					"name": "Authentication",
-					"item": [
-						{
-							"name": "staff login",
+							"name": "list categories",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [
 									{
 										"key": "Accept",
@@ -1812,35 +1218,20 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "email",
-											"value": "stu@gmail.com",
-											"type": "text"
-										},
-										{
-											"key": "password",
-											"value": "password",
-											"type": "text"
-										}
-									]
-								},
 								"url": {
-									"raw": "{{pos_url}}/login",
+									"raw": "{{pos_url}}/category",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"login"
+										"category"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "admin login",
+							"name": "store category",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -1854,125 +1245,76 @@
 									"mode": "formdata",
 									"formdata": [
 										{
-											"key": "email",
-											"value": "admin@gmail.com",
+											"key": "name",
+											"value": "sex toys",
 											"type": "text"
 										},
 										{
-											"key": "password",
-											"value": "password",
+											"key": "more_information",
+											"value": "sex toys",
 											"type": "text"
 										}
 									]
 								},
 								"url": {
-									"raw": "{{pos_url}}/login",
+									"raw": "{{pos_url}}/category",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"login"
+										"category"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "test",
+							"name": "show products under",
 							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "email",
-											"value": "admin@gmail.com",
-											"type": "text"
-										},
-										{
-											"key": "password",
-											"value": "password",
-											"type": "text"
-										}
-									]
-								},
+								"method": "GET",
+								"header": [],
 								"url": {
-									"raw": "https://c.mmsdev.site/api/v1/login",
-									"protocol": "https",
+									"raw": "{{pos_url}}/category/1",
 									"host": [
-										"c",
-										"mmsdev",
-										"site"
+										"{{pos_url}}"
 									],
 									"path": [
-										"api",
-										"v1",
-										"login"
+										"category",
+										"1"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "admin login (remote credentials)",
+							"name": "update categories",
 							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									},
-									{
-										"key": "Accept-Encoding",
-										"value": "gzip,deflate,br",
-										"type": "text"
-									},
-									{
-										"key": "Connection",
-										"value": "keep-alive",
-										"type": "text"
-									},
-									{
-										"key": "Connection",
-										"value": "keep-alive",
-										"type": "text"
-									},
-									{
-										"key": "Accept",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
+								"method": "PUT",
+								"header": [],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
+									"mode": "urlencoded",
+									"urlencoded": [
 										{
-											"key": "email",
-											"value": "a3@gmail.com",
+											"key": "name",
+											"value": "pizza pie!",
 											"type": "text"
 										},
 										{
-											"key": "password",
-											"value": "password",
-											"type": "text"
+											"key": "more_in",
+											"value": "",
+											"type": "text",
+											"disabled": true
 										}
 									]
 								},
 								"url": {
-									"raw": "{{pos_url}}/login",
+									"raw": "{{pos_url}}/category/1",
 									"host": [
 										"{{pos_url}}"
 									],
 									"path": [
-										"login"
+										"category",
+										"1"
 									]
 								}
 							},
@@ -1980,25 +1322,611 @@
 						}
 					]
 				}
-			],
-			"event": [
+			]
+		},
+		{
+			"name": "sale-processing",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "voucher",
+					"item": [
+						{
+							"name": "store voucher",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"voucher_number\": \"v123456\",\r\n    \"more_information\": \"Facere est voluptas autem ut eum ab sint dolore aut.\",\r\n    \"customer_name\": \"Khaing Thin Thin Htay\",\r\n    \"phone_number\": \"09-14248814\",\r\n    \"records\": [\r\n        {\r\n            \"product_id\": 29,\r\n            \"quantity\": 29\r\n        },\r\n        {\r\n            \"product_id\": 2,\r\n            \"quantity\": 66\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{pos_url}}/voucher",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list vouchers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show voucher",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher/42",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"42"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete voucher",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher/52",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"52"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list soft-deleted vouchers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pos_url}}/voucher/show-trash",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"show-trash"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "restore",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher/restore/25",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"restore",
+										"25"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "force delete",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher/force-delete/3",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"force-delete",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "empty bin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{pos_url}}/voucher/empty-bin",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"empty-bin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "recycle bin",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/voucher/recycle-bin",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"voucher",
+										"recycle-bin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "finance",
+			"item": [
+				{
+					"name": "daily",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/daily/17-09-2023",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"daily",
+								"17-09-2023"
+							]
+						}
+					},
+					"response": []
 				},
 				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"name": "daily Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/daily/17-09-2023",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"daily",
+								"17-09-2023"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sale close",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/close-sale",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"close-sale"
+							]
+						},
+						"description": "only admin can close/open sale, sale status doesn't required to open, implicitly done by current date"
+					},
+					"response": []
+				},
+				{
+					"name": "open sale",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/close-sale?false",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"close-sale"
+							],
+							"query": [
+								{
+									"key": "false",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkSaleClose",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{pos_url}}/finance/sale-close-check",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"sale-close-check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "monthly",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/monthly/1-2-2023",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"monthly",
+								"1-2-2023"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "custom-sale-overview",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{pos_url}}/finance/custom-sale-overview/2023-09-01/2023-09-20",
+							"host": [
+								"{{pos_url}}"
+							],
+							"path": [
+								"finance",
+								"custom-sale-overview",
+								"2023-09-01",
+								"2023-09-20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "report",
+			"item": [
+				{
+					"name": "stock-report",
+					"item": [
+						{
+							"name": "stock",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/stock-report?stock_level=in stock",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"stock-report"
+									],
+									"query": [
+										{
+											"key": "stock_level",
+											"value": "in stock"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "best-seller-brands",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/weekly-best-seller-brand",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"weekly-best-seller-brand"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "testing",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/sale-reprot-weekly",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-reprot-weekly"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "sale-report",
+					"item": [
+						{
+							"name": "this week",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/sale-report/current-week",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-report",
+										"current-week"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "this month",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pos_url}}/sale-report/current-month",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-report",
+										"current-month"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "that month",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{pos_url}}/sale-report/current-month?month=1",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-report",
+										"current-month"
+									],
+									"query": [
+										{
+											"key": "month",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "best sale products",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/sale-report/best-sale-products",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-report",
+										"best-sale-products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "best sale brands",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{pos_url}}/sale-report/best-sale-brands",
+									"host": [
+										"{{pos_url}}"
+									],
+									"path": [
+										"sale-report",
+										"best-sale-brands"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

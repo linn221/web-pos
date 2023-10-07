@@ -32,7 +32,7 @@ class VoucherController extends Controller
         if ($request->has('order') && in_array($request->order, ['id', 'created_at', 'voucher_number'])) {
             $voucher_q->orderBy($request->order, 'desc');
         } else {
-            $voucher_q->orderBy('created_at', 'desc');
+            $voucher_q->orderBy('id', 'desc');
         }
 
         $vouchers = $voucher_q->paginate(15)->withQueryString();
