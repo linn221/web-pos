@@ -12,7 +12,8 @@ return [
     'product_count' => 30,
     'voucher_record' => [
         'count' => 5,
-        'quantity' => 20
+        'quantity' => 20,
+        'min_stock' => 10
     ],
     'stock' => [
         'count' => 50,
