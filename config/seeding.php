@@ -16,10 +16,10 @@ return [
         'min_stock' => 10
     ],
     'stock' => [
-        'count' => 50,
+        'count' => 100,
         'quantity' => 200
     ],
-    'voucher_count' => 150,
+    'voucher_count' => 300,
     'month_count' => 12,
     'tax' => 0.04
 ];
