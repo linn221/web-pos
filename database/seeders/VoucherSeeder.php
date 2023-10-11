@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use App\Models\Stock;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -47,14 +48,18 @@ class VoucherSeeder extends Seeder
             ->count($remaining_vouchers)->create();
 
         // adding stocks for products with negative total_stock
-        $products = Product::where('total_stock', '<', 1);
-        foreach($products as $product) {
+        $products = Product::where('total_stock', '<', 1)->get();
+        foreach ($products as $product) {
             // add product a random number of stocks
             do {
-            
-            // keep adding stocks, as long as the stock count is negative
-            } while($product->total_stock < 0);
-        } 
+                Stock::factory()->create([
+                    'product_id' => $product->id
+                ]);
+                // refresh product to see if the product stock count is still negative or not
+                $product->refresh();
+                // keep adding stocks, as long as the stock count is negative
+            } while ($product->total_stock < 0);
+        }
         // $no_of_records = 1;
         // $generated_voucher_count = rand(0, $remaining_vouchers);
         // $remaining_vouchers -= $generated_voucher_count;
