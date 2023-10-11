@@ -47,6 +47,7 @@ class VoucherSeeder extends Seeder
             ->has(VoucherRecord::factory()->count($no_of_records), 'voucher_records')
             ->count($remaining_vouchers)->create();
 
+
         // adding stocks for products with negative total_stock
         $products = Product::where('total_stock', '<', 1)->get();
         foreach ($products as $product) {
@@ -60,32 +61,5 @@ class VoucherSeeder extends Seeder
                 // keep adding stocks, as long as the stock count is negative
             } while ($product->total_stock < 0);
         }
-        // $no_of_records = 1;
-        // $generated_voucher_count = rand(0, $remaining_vouchers);
-        // $remaining_vouchers -= $generated_voucher_count;
-        // Voucher::factory()
-        //     ->has(VoucherRecord::factory()->count($no_of_records))
-        //     ->count($generated_voucher_count)->create();
-
-        // // make remainig vouchers have 6 records fixed
-        // $no_of_records = 6;
-        // Voucher::factory()
-        //     ->has(VoucherRecord::factory()->count($no_of_records))
-        //     ->count($generated_voucher_count)->create();
-
-        // foreach($records_counts as $record_count) {
-
-        //     $generated_vouchers = rand(0, $remaining_vouchers);
-        //     $remaining_vouchers -= $generated_voucher_count;
-
-        //     Voucher::factory()
-        //     ->has(VoucherRecord::factory()->count($record_count))
-        //     ->count($generated_voucher_count)
-        //     ->create();
-        // }
-        // Voucher::factory()
-        // ->has(VoucherRecord::factory()->count(6))
-        // ->count($remaining_vouchers)
-        // ->create();
     }
 }

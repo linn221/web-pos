@@ -23,7 +23,6 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:20',
-            // @fix?
             'actual_price' => 'required|min:1|numeric',
             'sale_price' => 'required|min:1|numeric',
             // 'total_stock' => 'nullable|numeric',
@@ -31,8 +30,7 @@ class StoreProductRequest extends FormRequest
             'more_information' => 'nullable',
             'brand_id' => 'required|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
-            // @fix check if photo exists in the media
-            'photo' => 'nullable'
+            'photo' => 'nullable|max:255'
             // 'photo' => 'nullable|mimes:png,jpeg,gif'
         ];
     }

@@ -24,18 +24,18 @@ class VoucherController extends Controller
     public function index(Request $request)
     {
         if (Gate::allows('isAdmin')) {
-            $voucher_q = Voucher::query();
+            $voucher_builder = Voucher::query();
         } else {
-            $voucher_q = Auth::user()->vouchers()->today();
+            $voucher_builder = Auth::user()->vouchers()->today();
         }
-        $voucher_q->withCount('voucher_records');
+        $voucher_builder->withCount('voucher_records');
         if ($request->has('order') && in_array($request->order, ['id', 'created_at', 'voucher_number'])) {
-            $voucher_q->orderBy($request->order, 'desc');
+            $voucher_builder->orderBy($request->order, 'desc');
         } else {
-            $voucher_q->orderBy('id', 'desc');
+            $voucher_builder->orderBy('id', 'desc');
         }
 
-        $vouchers = $voucher_q->paginate(15)->withQueryString();
+        $vouchers = $voucher_builder->paginate(15)->withQueryString();
         // return new VoucherCollectionResource($vouchers);
         return new RecentSaleOverviewResource($vouchers);
         // return response()->json([
@@ -63,7 +63,6 @@ class VoucherController extends Controller
         }
         // return $request;
         $request->validate([
-            // @fix makes customer_name optional
             'customer_name' => 'nullable',
             'phone_number' => 'nullable',
             'voucher_number' => 'required',
@@ -90,10 +89,10 @@ class VoucherController extends Controller
             $product = Product::find($record['product_id']);
             $quantity = $record['quantity'];
             // @fix, return error/informative message on insufficient stock
+            // if product have enough stock
             if ($product->total_stock >= $quantity) {
                 // create voucher records
                 $cost = $product->sale_price * $quantity;
-                // @refactor, insert through voucher
                 $voucher->voucher_records()->create([
                     'product_id' => $product->id,
                     'cost' => $cost,
@@ -179,7 +178,6 @@ class VoucherController extends Controller
             abort(404, 'voucher not found');
         }
 
-        // @fix
         $voucher->forceDelete();
         return response()->json([
             'message' => 'You have deleted voucher permanently'
