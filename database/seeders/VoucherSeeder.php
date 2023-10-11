@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
+use App\Models\Stock;
 use App\Models\Voucher;
 use App\Models\VoucherRecord;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,47 +16,50 @@ class VoucherSeeder extends Seeder
      */
     public function run(): void
     {
-        // voucher with 5 records
-        Voucher::factory()
-        ->has(
-            VoucherRecord::factory()->count(config('seeding.voucher_record.count')),
-            'voucher_records'
-        )
-        ->count(config('seeding.voucher_count') * 0.4)
-        ->create();
+        $remaining_vouchers = config('seeding.voucher_count');
 
-        // voucher with 3 records
+        // generate a random number of vouchers with 2 records
+        $no_of_records = 2;
+        $generated_voucher_count = rand(0, $remaining_vouchers);
+        $remaining_vouchers -= $generated_voucher_count;
         Voucher::factory()
-        ->has(
-            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 2),
-            'voucher_records'
-        )
-        ->count(config('seeding.voucher_count') * 0.3)
-        ->create();
+            ->has(VoucherRecord::factory()->count($no_of_records), 'voucher_records')
+            ->count($generated_voucher_count)->create();
 
-        // voucher with 4 records
+        // generate a random number of vouchers with 1 records, 
+        $no_of_records = 1;
+        $generated_voucher_count = rand(0, $remaining_vouchers);
+        $remaining_vouchers -= $generated_voucher_count;
         Voucher::factory()
-        ->has(
-            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 1),
-            'voucher_records'
-        )
-        ->count(config('seeding.voucher_count') * 0.2)
-        ->create();
+            ->has(VoucherRecord::factory()->count($no_of_records), 'voucher_records')
+            ->count($generated_voucher_count)->create();
 
-        // voucher with 6 records
+        $no_of_records = 4;
+        $generated_voucher_count = rand(0, $remaining_vouchers);
+        $remaining_vouchers -= $generated_voucher_count;
         Voucher::factory()
-        ->has(
-            VoucherRecord::factory()->count(config('seeding.voucher_record.count') - 1),
-            'voucher_records'
-        )
-        ->count(config('seeding.voucher_count') * 0.1)
-        ->create();
-        // @
-        // for ($i = 1; $i <= $voucher_count; $i++) {
-        //     $voucher = Voucher::find($i);
-        //     $total_cost = $voucher->voucher_records()->sum('cost');
-        //     $voucher->net_total = $total_cost;
-        //     $voucher->save();
-        // }
+            ->has(VoucherRecord::factory()->count($no_of_records), 'voucher_records')
+            ->count($generated_voucher_count)->create();
+
+        // finally, finish remaining vouchers with records of 3
+        $no_of_records = 3;
+        Voucher::factory()
+            ->has(VoucherRecord::factory()->count($no_of_records), 'voucher_records')
+            ->count($remaining_vouchers)->create();
+
+
+        // adding stocks for products with negative total_stock
+        $products = Product::where('total_stock', '<', 1)->get();
+        foreach ($products as $product) {
+            // add product a random number of stocks
+            do {
+                Stock::factory()->create([
+                    'product_id' => $product->id
+                ]);
+                // refresh product to see if the product stock count is still negative or not
+                $product->refresh();
+                // keep adding stocks, as long as the stock count is negative
+            } while ($product->total_stock < 0);
+        }
     }
 }
